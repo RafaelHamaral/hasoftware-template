@@ -1,3 +1,24 @@
+<?php
+/**
+ * Configurações simples desta página.
+ *
+ * Mantemos o "ano de início" em uma variável e calculamos os anos de experiência
+ * automaticamente com base no ano atual.
+ */
+
+// Importa funções reutilizáveis (fácil de reaproveitar em outras páginas futuramente).
+require_once __DIR__ . '/php/experience.php';
+
+// Ano de início da empresa (ajuste aqui quando necessário).
+$companyStartYear = 2024;
+
+// Anos de experiência calculados automaticamente.
+$experienceYears = company_experience_years($companyStartYear);
+
+// Texto pronto para exibir no site.
+// Se quiser o formato "Mais de X anos", basta trocar a string abaixo.
+$experienceLabel = 'Mais de ' . $experienceYears . ' anos';
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -5,7 +26,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Site institucional - Conheça nossos serviços e entre em contato.">
-    <title>Nome da Empresa | Soluções Profissionais</title>
+    <title>Rafael Holanda do Amaral | Soluções Profissionais</title>
 
     <!-- Google Fonts - Tipografia elegante (Outfit + DM Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +42,7 @@
         <div class="container header__container">
             <!-- Logo da empresa (substitua o texto pelo caminho da imagem quando tiver) -->
             <a href="#inicio" class="header__logo" aria-label="Ir para início">
-                <span class="header__logo-text">Sua Empresa</span>
+                <span class="header__logo-text">Rafael H. A Consultoria & Desenvolvimento</span>
             </a>
 
             <!-- Botão do menu mobile (hambúrguer) -->
@@ -53,7 +74,7 @@
             <div class="hero__bg"></div>
 
             <div class="container hero__content">
-                <h1 class="hero__title">Sua Empresa</h1>
+                <h1 class="hero__title">Rafael H. A Consultoria & Desenvolvimento</h1>
                 <p class="hero__tagline">Transformando ideias em resultados. Soluções que fazem a diferença para o seu negócio.</p>
                 <a href="#servicos" class="btn btn--primary hero__cta">Conheça nossos serviços</a>
             </div>
@@ -77,7 +98,7 @@
                     <p class="about__lead">Somos uma empresa focada em entregar excelência e resultados.</p>
                     <p class="about__body">Com anos de experiência no mercado, ajudamos nossos clientes a alcançar seus objetivos com soluções personalizadas e um atendimento próximo. Nossa missão é criar parcerias duradouras baseadas em confiança e qualidade.</p>
                     <ul class="about__highlights">
-                        <li><strong>+X anos</strong> de experiência</li>
+                        <li><strong><?= htmlspecialchars($experienceLabel, ENT_QUOTES, 'UTF-8') ?></strong> de experiência</li>
                         <li><strong>Clientes satisfeitos</strong> em todo o Brasil</li>
                         <li><strong>Atendimento humanizado</strong> e dedicado</li>
                     </ul>
@@ -165,10 +186,37 @@
             </div>
         </section>
 
-        <!-- Âncora para "Agendar consultoria" (pode apontar para um modal ou página futura) -->
+        <!-- Âncora para "Agendar consultoria" -->
         <section class="section section--minimal" id="agendar" aria-label="Agendar consultoria">
             <div class="container">
-                <p class="section__subtitle">Em breve: agendamento online de consultoria.</p>
+                <p class="section__subtitle">Pronto para dar o próximo passo com o seu projeto?</p>
+
+                <?php
+                /**
+                 * Link oficial do WhatsApp (wa.me) para agendamento de consultoria.
+                 *
+                 * - $whatsAppNumber: número completo com código do país e DDD, apenas dígitos.
+                 *   Ex: 55 (Brasil) + 11 (DDD) + 999999999 (número) => 5511999999999
+                 * - $whatsAppMessage: mensagem inicial que será pré-preenchida na conversa.
+                 */
+                $whatsAppNumber = '5511999999999';
+                $whatsAppMessage = 'Olá, gostaria de agendar uma consultoria.';
+
+                // Monta a URL da API wa.me com a mensagem codificada.
+                $whatsAppUrl = 'https://wa.me/' . $whatsAppNumber . '?text=' . urlencode($whatsAppMessage);
+                ?>
+
+                <!-- Botão estilizado que abre o WhatsApp em uma nova aba -->
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <a
+                        href="<?= htmlspecialchars($whatsAppUrl, ENT_QUOTES, 'UTF-8') ?>"
+                        class="btn btn--primary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Agendar consultoria pelo WhatsApp
+                    </a>
+                </div>
             </div>
         </section>
     </main>
