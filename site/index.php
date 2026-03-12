@@ -33,6 +33,13 @@ $experienceLabel = 'Mais de ' . $experienceYears . ' anos';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Font Awesome - Ícones (usado para o cadeado da área restrita) -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer">
+
     <!-- Folha de estilos principal -->
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -60,6 +67,12 @@ $experienceLabel = 'Mais de ' . $experienceYears . ' anos';
                     <li><a href="#servicos" class="nav__link">Serviços</a></li>
                     <li><a href="#contato" class="nav__link">Contato</a></li>
                     <li><a href="#agendar" class="nav__link nav__link--cta">Agendar consultoria</a></li>
+                    <li>
+                        <!-- Ícone de cadeado (Font Awesome) levando para a área de login -->
+                        <a href="login.php" class="nav__link" aria-label="Área restrita">
+                            <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>

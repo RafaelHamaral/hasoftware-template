@@ -659,3 +659,106 @@ ul {
     font-size: 0.875rem;
     color: var(--color-text-muted);
 }
+
+/* ========== PÁGINA DE LOGIN / AUTENTICAÇÃO ========== */
+.auth-page {
+    /* Usa o mesmo fundo dark do site, mas podemos ajustar se quiser */
+    background-color: var(--color-bg);
+}
+
+.auth-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 6rem; /* compensa o header fixo */
+}
+
+.auth-section__container {
+    display: flex;
+    justify-content: center;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--color-bg-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    padding: 2.5rem 2rem 2.25rem;
+    box-shadow: var(--shadow);
+}
+
+@media (min-width: 480px) {
+    .auth-card {
+        padding: 2.75rem 2.5rem 2.5rem;
+    }
+}
+
+.auth-card .section__title {
+    margin-bottom: 0.5rem;
+}
+
+.auth-card .section__subtitle {
+    margin-bottom: 1.75rem;
+}
+
+.auth-alert {
+    background: rgba(220, 38, 38, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.7);
+    color: #fecaca;
+    border-radius: var(--radius-sm);
+    padding: 0.9rem 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.auth-alert ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    list-style: disc;
+}
+
+.auth-alert li + li {
+    margin-top: 0.25rem;
+}
+
+.auth-form__label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+}
+
+.auth-form__input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 1.1rem;
+    transition: border-color var(--transition);
+}
+
+.auth-form__input::placeholder {
+    color: var(--color-text-muted);
+}
+
+.auth-form__input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+
+.auth-form__btn {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.auth-form__hint {
+    margin-top: 0.9rem;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
