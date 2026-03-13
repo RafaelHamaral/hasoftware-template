@@ -248,7 +248,7 @@ $experienceLabel = 'Mais de ' . $experienceYears . ' anos';
                 <a href="#" aria-label="LinkedIn">LinkedIn</a>
                 <a href="#" aria-label="Facebook">Facebook</a>
             </div>
-            <p class="footer__copy">&copy; <span id="currentYear"></span> Sua Empresa. Todos os direitos reservados.</p>
+            <p class="footer__copy">&copy; <span id="currentYear"></span> Rafael H. Amaral. Todos os direitos reservados.</p>
         </div>
     </footer>
 
