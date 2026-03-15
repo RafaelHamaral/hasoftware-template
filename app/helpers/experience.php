@@ -26,4 +26,3 @@ function company_experience_years(int $startYear, ?int $currentYear = null): int
     // Garante retorno seguro caso o ano inicial seja maior que o ano atual.
     return max(0, $yearNow - $startYear);
 }
-

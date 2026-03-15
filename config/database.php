@@ -16,10 +16,10 @@
 function getPDO(): PDO
 {
     // Dados de conexão – ajuste conforme o seu ambiente.
-    $dbHost = '127.0.0.1';      // Ex: 127.0.0.1 ou localhost
-    $dbName = 'sua_base';       // Ex: vibecoding_um
-    $dbUser = 'seu_usuario';    // Ex: root
-    $dbPass = 'sua_senha';      // Ex: senha forte
+    $dbHost = 'localhost';      // Ex: 127.0.0.1 ou localhost
+    $dbName = 'vibecoding';       // Ex: vibecoding_um
+    $dbUser = 'root';    // Ex: root
+    $dbPass = '';      // Ex: senha forte
     $dbCharset = 'utf8mb4';
 
     $dsn = "mysql:host={$dbHost};dbname={$dbName};charset={$dbCharset}";
@@ -33,4 +33,3 @@ function getPDO(): PDO
 
     return new PDO($dsn, $dbUser, $dbPass, $options);
 }
-
