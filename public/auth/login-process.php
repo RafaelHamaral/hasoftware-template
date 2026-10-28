@@ -50,7 +50,7 @@ if (!empty($errors)) {
 
 try {
     $pdo  = getPDO();
-    $stmt = $pdo->prepare('SELECT id, name, email, password FROM users WHERE email = :email LIMIT 1');
+    $stmt = $pdo->prepare('SELECT id, name, email, password, type FROM users WHERE email = :email LIMIT 1');
     $stmt->execute(['email' => $email]);
     $user = $stmt->fetch();
 
@@ -65,7 +65,8 @@ try {
     $_SESSION['user_id']    = $user['id'];
     $_SESSION['user_name']  = $user['name'];
     $_SESSION['user_email'] = $user['email'];
-
+    $_SESSION['user_type']  = $user['type'] ?? 'viewer';
+    
     header('Location: ' . (BASE_URL ? BASE_URL . 'area-restrita' : 'area-restrita.php'));
     exit;
 } catch (Throwable $e) {

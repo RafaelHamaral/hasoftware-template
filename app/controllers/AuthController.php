@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Controller de autenticação: login, processar login, área restrita, logout.
  */
@@ -16,17 +17,45 @@ class AuthController
         $oldEmail    = $_SESSION['login_old_email'] ?? '';
         unset($_SESSION['login_errors'], $_SESSION['login_old_email']);
 
-        $title = 'Login | Rafael H. A Consultoria & Desenvolvimento';
+        if (empty($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+        $csrfToken = $_SESSION['csrf_token'];
+
+        $title = 'Login | H. A Consultoria & Desenvolvimento';
         require BASE_PATH . '/app/views/login.php';
     }
 
     public function authenticate(): void
     {
+        // 1. CSRF
+        $token = $_POST['csrf_token'] ?? '';
+        if (!hash_equals($_SESSION['csrf_token'] ?? '', $token)) {
+            $_SESSION['login_errors'] = ['Sessão expirada. Tente novamente.'];
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+        }
+
+        // 2. Rate limit (ANTES de consultar o banco)
+        $attempts = $_SESSION['login_attempts'] ?? 0;
+        $last     = $_SESSION['login_last'] ?? 0;
+
+        if ($attempts >= 5 && (time() - $last) < 300) {
+            $_SESSION['login_errors'] = ['Muitas tentativas. Aguarde alguns minutos.'];
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+        }
+        // Janela expirada: zera o contador
+        if ((time() - $last) >= 300) {
+            $attempts = 0;
+            $_SESSION['login_attempts'] = 0;
+        }
+
         $email    = isset($_POST['email']) ? trim($_POST['email']) : '';
         $password = isset($_POST['password']) ? (string)$_POST['password'] : '';
         $errors   = [];
 
-        if (empty($email)) {
+        if ($email === '') {
             $errors[] = 'Informe o seu e-mail.';
         } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors[] = 'Informe um e-mail válido.';
@@ -34,19 +63,6 @@ class AuthController
 
         if ($password === '') {
             $errors[] = 'Informe a sua senha.';
-        } else {
-            if (strlen($password) < 6) {
-                $errors[] = 'A senha deve ter no mínimo 6 caracteres.';
-            }
-            if (!preg_match('/[A-Z]/', $password)) {
-                $errors[] = 'A senha deve conter ao menos 1 letra maiúscula.';
-            }
-            if (!preg_match('/[a-z]/', $password)) {
-                $errors[] = 'A senha deve conter ao menos 1 letra minúscula.';
-            }
-            if (!preg_match('/[!@#$%^&*()_\-+=\{\}\[\]:;,.<>?~]/', $password)) {
-                $errors[] = 'A senha deve conter ao menos 1 caractere especial.';
-            }
         }
 
         if (!empty($errors)) {
@@ -64,13 +80,19 @@ class AuthController
             $user = $stmt->fetch();
 
             if (!$user || !password_verify($password, $user['password'])) {
+                // Conta a falha
+                $_SESSION['login_attempts'] = $attempts + 1;
+                $_SESSION['login_last']     = time();
+
                 $_SESSION['login_errors']    = ['E-mail ou senha inválidos. Verifique os dados e tente novamente.'];
                 $_SESSION['login_old_email'] = $email;
                 header('Location: ' . BASE_URL . 'login');
                 exit;
             }
 
+            // Sucesso
             session_regenerate_id(true);
+            unset($_SESSION['csrf_token'], $_SESSION['login_attempts'], $_SESSION['login_last']);
             $_SESSION['user_id']    = $user['id'];
             $_SESSION['user_name']  = $user['name'];
             $_SESSION['user_email'] = $user['email'];
@@ -78,6 +100,7 @@ class AuthController
             header('Location: ' . BASE_URL . 'area-restrita');
             exit;
         } catch (Throwable $e) {
+            error_log('Erro no login: ' . $e->getMessage());
             $_SESSION['login_errors'] = ['Ocorreu um erro ao tentar autenticar. Tente novamente em alguns instantes.'];
             header('Location: ' . BASE_URL . 'login');
             exit;
@@ -90,6 +113,9 @@ class AuthController
             header('Location: ' . BASE_URL . 'login');
             exit;
         }
+        
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+        header('Pragma: no-cache');
 
         $title = 'Área restrita';
         require BASE_PATH . '/app/views/area-restrita.php';

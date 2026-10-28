@@ -1,13 +1,22 @@
 <?php
+
 /**
  * Cabeçalho compartilhado (head + menu).
  * Usa $title e BASE_URL (definidos por quem inclui).
  */
-$title = $title ?? 'Rafael H. A Consultoria & Desenvolvimento';
+$title = $title ?? 'H. A Consultoria & Desenvolvimento';
 $base = defined('BASE_URL') ? BASE_URL : '';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$isLogged = !empty($_SESSION['user_id']);
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,10 +28,10 @@ $base = defined('BASE_URL') ? BASE_URL : '';
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer">
 
     <link rel="stylesheet" href="<?= $base ?>css/style.css">
 </head>
@@ -30,7 +39,7 @@ $base = defined('BASE_URL') ? BASE_URL : '';
     <header class="header" id="header">
         <div class="container header__container">
             <a href="<?= $base ? $base . '#inicio' : 'index.php#inicio' ?>" class="header__logo" aria-label="Ir para início">
-                <span class="header__logo-text">Rafael H. A Consultoria & Desenvolvimento</span>
+                <span class="header__logo-text">H. A Consultoria & Desenvolvimento</span>
             </a>
 
             <button class="header__toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">
@@ -47,9 +56,22 @@ $base = defined('BASE_URL') ? BASE_URL : '';
                     <li><a href="<?= $base ? $base . '#contato' : 'index.php#contato' ?>" class="nav__link">Contato</a></li>
                     <li><a href="<?= $base ? $base . '#agendar' : 'index.php#agendar' ?>" class="nav__link nav__link--cta">Agendar consultoria</a></li>
                     <li>
-                        <a href="<?= $base ? $base . 'login' : 'login.php' ?>" class="nav__link" aria-label="Área restrita">
-                            <i class="fa-solid fa-lock" aria-hidden="true"></i>
-                        </a>
+                        <?php if ($isLogged): ?>
+                            <a href="<?= $base ? $base . 'logout' : 'logout.php' ?>"
+                                class="nav__link"
+                                title="Sair"
+                                aria-label="Sair da área restrita"
+                                onclick="return confirm('Deseja realmente sair da área restrita?');">
+                                <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+                            </a>
+                        <?php else: ?>
+                            <a href="<?= $base ? $base . 'login' : 'login.php' ?>"
+                                class="nav__link"
+                                title="Área restrita"
+                                aria-label="Área restrita">
+                                <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                            </a>
+                        <?php endif; ?>
                     </li>
                 </ul>
             </nav>

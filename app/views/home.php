@@ -10,7 +10,7 @@ require BASE_PATH . '/app/views/partials/header.php';
             <div class="hero__overlay"></div>
             <div class="hero__bg"></div>
             <div class="container hero__content">
-                <h1 class="hero__title">Rafael H. A Consultoria & Desenvolvimento</h1>
+                <h1 class="hero__title">H. A Consultoria & Desenvolvimento</h1>
                 <p class="hero__tagline">Transformando ideias em resultados. Soluções que fazem a diferença para o seu negócio.</p>
                 <a href="#servicos" class="btn btn--primary hero__cta">Conheça nossos serviços</a>
             </div>
@@ -30,7 +30,7 @@ require BASE_PATH . '/app/views/partials/header.php';
                     <p class="about__body">Com anos de experiência no mercado, ajudamos nossos clientes a alcançar seus objetivos com soluções personalizadas e um atendimento próximo. Nossa missão é criar parcerias duradouras baseadas em confiança e qualidade.</p>
                     <ul class="about__highlights">
                         <li><strong><?= htmlspecialchars($experienceLabel, ENT_QUOTES, 'UTF-8') ?></strong> de experiência</li>
-                        <li><strong>Clientes satisfeitos</strong> em todo o Brasil</li>
+                        <!-- <li><strong>Clientes satisfeitos</strong> em todo o Brasil</li> -->
                         <li><strong>Atendimento humanizado</strong> e dedicado</li>
                     </ul>
                 </div>

@@ -762,3 +762,88 @@ ul {
     color: var(--color-text-muted);
 }
 
+.dashboard-container {
+    padding: 40px;
+    color: #fff;
+}
+
+.dashboard-cards {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.dashboard-card {
+    background: #1e1e2f;
+    padding: 20px;
+    border-radius: 12px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.dashboard-card h3 {
+    margin-bottom: 10px;
+}
+
+.dashboard-card p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.dashboard-menu {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dashboard-menu-item {
+    background: #2a2a40;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #fff;
+    transition: 0.3s;
+}
+
+.dashboard-menu-item:hover {
+    background: #3a3a60;
+}
+
+.config-container {
+    padding: 40px;
+    color: #fff;
+}
+
+.config-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.config-input {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+}
+
+.config-button {
+    padding: 10px;
+    background: #3a3a60;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+}
+
+.config-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.config-table th,
+.config-table td {
+    border: 1px solid #444;
+    padding: 10px;
+}

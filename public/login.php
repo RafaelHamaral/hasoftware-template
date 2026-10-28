@@ -11,7 +11,7 @@ $loginErrors = $_SESSION['login_errors'] ?? [];
 $oldEmail    = $_SESSION['login_old_email'] ?? '';
 unset($_SESSION['login_errors'], $_SESSION['login_old_email']);
 
-$title     = 'Login | Rafael H. A Consultoria & Desenvolvimento';
+$title     = 'Login | H.A Consultoria & Desenvolvimento';
 $bodyClass = 'auth-page';
 
 require BASE_PATH . '/app/views/login.php';
