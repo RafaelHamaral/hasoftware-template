@@ -10,6 +10,7 @@ $router->get('/login', [AuthController::class, 'login']);
 $router->get('/login.php', [AuthController::class, 'login']);
 
 $router->post('/authenticate', [AuthController::class, 'authenticate']);
+$router->post('/authenticate.php', [AuthController::class, 'authenticate']);
 
 $router->get('/logout', [AuthController::class, 'logout']);
 $router->get('/logout.php', [AuthController::class, 'logout']);

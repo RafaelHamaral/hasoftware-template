@@ -1,30 +1,25 @@
 <?php
 /**
- * Configuração de conexão com o banco de dados usando PDO.
- *
- * Ajuste as variáveis abaixo de acordo com o seu ambiente (host, nome do banco,
- * usuário e senha). Esta função pode ser reutilizada em qualquer parte do
- * projeto para obter uma conexão com o banco de dados.
+ * Conexão PDO. Credenciais vêm apenas de variáveis de ambiente.
  */
 
+require_once __DIR__ . '/env.php';
+loadEnvFile((defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__)) . '/.env');
+
 /**
- * Retorna uma instância de PDO conectada ao banco de dados.
- *
  * @return PDO
- * @throws PDOException Em caso de falha na conexão.
+ * @throws PDOException|RuntimeException
  */
 function getPDO(): PDO
 {
-    // Dados de conexão – ajuste conforme o seu ambiente.
-    $dbHost = 'localhost';      // Ex: 127.0.0.1 ou localhost
-    $dbName = 'vibecoding';       // Ex: vibecoding_um
-    $dbUser = 'root';    // Ex: root
-    $dbPass = '';      // Ex: senha forte
-    $dbCharset = 'utf8mb4';
+    $dbHost = envValue('DB_HOST');
+    $dbName = envValue('DB_NAME');
+    $dbUser = envValue('DB_USER');
+    $dbPass = envValue('DB_PASS', '');
+    $dbCharset = envValue('DB_CHARSET', 'utf8mb4');
 
     $dsn = "mysql:host={$dbHost};dbname={$dbName};charset={$dbCharset}";
 
-    // Opções recomendadas para segurança e tratamento de erros.
     $options = [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

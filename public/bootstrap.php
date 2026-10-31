@@ -6,7 +6,18 @@
 if (!defined('BASE_PATH')) {
     require_once __DIR__ . '/../config/config.php';
 }
-session_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+    $secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path'     => '/',
+        'secure'   => $secure,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+    session_start();
+}
 
 spl_autoload_register(function (string $class): void {
     $base = defined('BASE_PATH') ? BASE_PATH : dirname(__DIR__);

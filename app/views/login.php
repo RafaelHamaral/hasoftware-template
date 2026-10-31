@@ -23,7 +23,7 @@ require BASE_PATH . '/app/views/partials/header.php';
                         </div>
                     <?php endif; ?>
 
-                    <form class="auth-form" action="<?= (defined('BASE_URL') && BASE_URL) ? BASE_URL . 'authenticate' : 'auth/login-process.php' ?>" method="post" novalidate>
+                    <form class="auth-form" action="<?= BASE_URL ?>authenticate" method="post" novalidate>
                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>">                        <label for="email" class="auth-form__label">E-mail</label>
                         <input type="email" id="email" name="email" class="auth-form__input" placeholder="seu@email.com" required value="<?= htmlspecialchars($oldEmail ?? '', ENT_QUOTES, 'UTF-8') ?>">
 

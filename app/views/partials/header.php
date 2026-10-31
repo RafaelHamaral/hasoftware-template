@@ -57,7 +57,7 @@ $isLogged = !empty($_SESSION['user_id']);
                     <li><a href="<?= $base ? $base . '#agendar' : 'index.php#agendar' ?>" class="nav__link nav__link--cta">Agendar consultoria</a></li>
                     <li>
                         <?php if ($isLogged): ?>
-                            <a href="<?= $base ? $base . 'logout' : 'logout.php' ?>"
+                            <a href="<?= $base ?>logout"
                                 class="nav__link"
                                 title="Sair"
                                 aria-label="Sair da área restrita"
@@ -65,7 +65,7 @@ $isLogged = !empty($_SESSION['user_id']);
                                 <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
                             </a>
                         <?php else: ?>
-                            <a href="<?= $base ? $base . 'login' : 'login.php' ?>"
+                            <a href="<?= $base ?>login"
                                 class="nav__link"
                                 title="Área restrita"
                                 aria-label="Área restrita">

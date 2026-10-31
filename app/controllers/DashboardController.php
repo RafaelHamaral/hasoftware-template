@@ -6,21 +6,17 @@ class DashboardController
 {
     public function index()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        // 🔐 Verificação de autenticação (compatível com seu login)
         if (!isset($_SESSION['user_id'])) {
             header("Location: " . BASE_URL . "login");
             exit;
         }
 
-        // 👤 Nome do usuário
-        $userName = $_SESSION['user_name'] ?? 'Usuário';
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+        header('Pragma: no-cache');
 
-        // 👤 Tipo (por enquanto mockado)
-        $userType = $_SESSION['user_type'] ?? 'admin'; // ou 'viewer'
+        $userName = $_SESSION['user_name'] ?? 'Usuário';
+        // Ausência de type não concede admin.
+        $userType = $_SESSION['user_type'] ?? 'viewer';
 
         // 📊 Dados
         $model = new DashboardModel();

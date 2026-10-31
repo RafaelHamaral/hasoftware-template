@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Controller de autenticação: login, processar login, área restrita, logout.
+ * Controller de autenticação: login, processar login, logout.
  */
 
 class AuthController
@@ -28,6 +28,11 @@ class AuthController
 
     public function authenticate(): void
     {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+        }
+
         // 1. CSRF
         $token = $_POST['csrf_token'] ?? '';
         if (!hash_equals($_SESSION['csrf_token'] ?? '', $token)) {
@@ -75,7 +80,7 @@ class AuthController
         try {
             require_once BASE_PATH . '/config/database.php';
             $pdo  = getPDO();
-            $stmt = $pdo->prepare('SELECT id, name, email, password FROM users WHERE email = :email LIMIT 1');
+            $stmt = $pdo->prepare('SELECT id, name, email, password, type FROM users WHERE email = :email LIMIT 1');
             $stmt->execute(['email' => $email]);
             $user = $stmt->fetch();
 
@@ -96,6 +101,8 @@ class AuthController
             $_SESSION['user_id']    = $user['id'];
             $_SESSION['user_name']  = $user['name'];
             $_SESSION['user_email'] = $user['email'];
+            $type = (string) ($user['type'] ?? '');
+            $_SESSION['user_type'] = ($type === 'admin') ? 'admin' : 'viewer';
 
             header('Location: ' . BASE_URL . 'area-restrita');
             exit;
@@ -105,20 +112,6 @@ class AuthController
             header('Location: ' . BASE_URL . 'login');
             exit;
         }
-    }
-
-    public function dashboard(): void
-    {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: ' . BASE_URL . 'login');
-            exit;
-        }
-        
-        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-        header('Pragma: no-cache');
-
-        $title = 'Área restrita';
-        require BASE_PATH . '/app/views/area-restrita.php';
     }
 
     public function logout(): void

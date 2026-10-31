@@ -6,8 +6,6 @@ class ConfigController
 {
     private function checkAuth()
     {
-        session_start();
-
         if (!isset($_SESSION['user_id'])) {
             header("Location: " . BASE_URL . "login");
             exit;
@@ -16,12 +14,21 @@ class ConfigController
 
     private function isAdmin()
     {
-        return ($_SESSION['user_type'] ?? 'viewer') === 'admin';
+        return ($_SESSION['user_type'] ?? '') === 'admin';
+    }
+
+    private function requireAdmin()
+    {
+        $this->checkAuth();
+        if (!$this->isAdmin()) {
+            header("Location: " . BASE_URL . "area-restrita");
+            exit;
+        }
     }
 
     public function emailTemplate()
     {
-        $this->checkAuth();
+        $this->requireAdmin();
 
         $model = new ConfigModel();
         $data = [
@@ -34,7 +41,7 @@ class ConfigController
 
     public function contato()
     {
-        $this->checkAuth();
+        $this->requireAdmin();
 
         $model = new ConfigModel();
         $data = [
@@ -47,12 +54,7 @@ class ConfigController
 
     public function usuarios()
     {
-        $this->checkAuth();
-
-        if (!$this->isAdmin()) {
-            header("Location: " . BASE_URL . "area-restrita");
-            exit;
-        }
+        $this->requireAdmin();
 
         $model = new ConfigModel();
         $data = [

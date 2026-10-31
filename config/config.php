@@ -8,6 +8,9 @@ if (!defined('BASE_PATH')) {
     define('BASE_PATH', dirname(__DIR__));
 }
 
+require_once BASE_PATH . '/config/env.php';
+loadEnvFile(BASE_PATH . '/.env');
+
 // URL base da aplicação ('' se document root é public/; '/' ou '/pasta/' se usar rewrite).
 if (!defined('BASE_URL')) {
     define('BASE_URL', '');
