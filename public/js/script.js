@@ -11,7 +11,6 @@
     const menuToggle = document.getElementById('menuToggle');
     const mainNav = document.getElementById('mainNav');
     const navLinks = document.querySelectorAll('.nav__link');
-    const contactForm = document.getElementById('contactForm');
     const currentYearEl = document.getElementById('currentYear');
 
     // ========== MENU MOBILE ==========
@@ -34,6 +33,17 @@
         menuToggle.setAttribute('aria-expanded', 'false');
         menuToggle.setAttribute('aria-label', 'Abrir menu');
         document.body.style.overflow = '';
+    }
+
+    var headerVisibilityToggle = document.getElementById('headerVisibilityToggle');
+    if (headerVisibilityToggle) {
+        headerVisibilityToggle.addEventListener('click', function () {
+            document.body.classList.toggle('is-header-hidden');
+            var hidden = document.body.classList.contains('is-header-hidden');
+            headerVisibilityToggle.setAttribute('aria-expanded', hidden ? 'false' : 'true');
+            headerVisibilityToggle.setAttribute('aria-label', hidden ? 'Mostrar menu' : 'Ocultar menu');
+            headerVisibilityToggle.textContent = hidden ? 'Mostrar menu' : 'Ocultar menu';
+        });
     }
 
     if (menuToggle && mainNav) {
@@ -118,31 +128,13 @@
         currentYearEl.textContent = new Date().getFullYear();
     }
 
-    // ========== FORMULÁRIO DE CONTATO ==========
-    /**
-     * Impede envio padrão do form. Quando integrar com PHP, o action do form
-     * pode apontar para um script que processa os dados.
-     */
-    if (contactForm) {
-        contactForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            // Aqui você pode adicionar validação extra ou envio via fetch para PHP no futuro.
-            var btn = contactForm.querySelector('button[type="submit"]');
-            var originalText = btn ? btn.textContent : 'Enviar';
-            if (btn) {
-                btn.textContent = 'Enviando...';
-                btn.disabled = true;
+    var configFlash = document.getElementById('configFlash');
+    if (configFlash && configFlash.open && configFlash.classList.contains('config-popup--success')) {
+        setTimeout(function () {
+            if (typeof configFlash.close === 'function') {
+                configFlash.close();
             }
-            setTimeout(function () {
-                if (btn) {
-                    btn.textContent = 'Mensagem enviada!';
-                    btn.disabled = false;
-                }
-                contactForm.reset();
-                setTimeout(function () {
-                    if (btn) btn.textContent = originalText;
-                }, 2000);
-            }, 800);
-        });
+        }, 4000);
     }
+
 })();

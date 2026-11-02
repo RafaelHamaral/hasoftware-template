@@ -1,6 +1,7 @@
 <?php
 
 require_once BASE_PATH . '/app/models/DashboardModel.php';
+require_once BASE_PATH . '/app/models/MensagemModel.php';
 
 class DashboardController
 {
@@ -21,6 +22,11 @@ class DashboardController
         // 📊 Dados
         $model = new DashboardModel();
         $stats = $model->getDashboardStats();
+        try {
+            $stats['emails_hoje'] = (new MensagemModel())->countToday();
+        } catch (Throwable $e) {
+            $stats['emails_hoje'] = 0;
+        }
 
         $data = [
             'stats' => $stats,
@@ -28,6 +34,7 @@ class DashboardController
             'userType' => $userType
         ];
 
+        $isRestricted = true;
         require BASE_PATH . '/app/views/dashboard/area-restrita.php';
     }
 }

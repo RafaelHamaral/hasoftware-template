@@ -12,6 +12,17 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $isLogged = !empty($_SESSION['user_id']);
+$isRestricted = !empty($isRestricted);
+
+$bodyClasses = [];
+if (!empty($bodyClass)) {
+    $bodyClasses[] = $bodyClass;
+}
+if ($isRestricted) {
+    $bodyClasses[] = 'is-restricted';
+    $bodyClasses[] = 'is-header-hidden';
+}
+$bodyClassAttr = $bodyClasses !== [] ? ' class="' . htmlspecialchars(implode(' ', $bodyClasses), ENT_QUOTES, 'UTF-8') . '"' : '';
 
 ?>
 <!DOCTYPE html>
@@ -35,7 +46,19 @@ $isLogged = !empty($_SESSION['user_id']);
 
     <link rel="stylesheet" href="<?= $base ?>css/style.css">
 </head>
-<body<?= isset($bodyClass) ? ' class="' . htmlspecialchars($bodyClass, ENT_QUOTES, 'UTF-8') . '"' : '' ?>>
+<body<?= $bodyClassAttr ?>>
+    <?php if ($isRestricted): ?>
+        <button
+            type="button"
+            class="header-visibility-toggle"
+            id="headerVisibilityToggle"
+            aria-controls="header"
+            aria-expanded="false"
+            aria-label="Mostrar menu"
+        >
+            Mostrar menu
+        </button>
+    <?php endif; ?>
     <header class="header" id="header">
         <div class="container header__container">
             <a href="<?= $base ? $base . '#inicio' : 'index.php#inicio' ?>" class="header__logo" aria-label="Ir para início">
@@ -57,6 +80,12 @@ $isLogged = !empty($_SESSION['user_id']);
                     <li><a href="<?= $base ? $base . '#agendar' : 'index.php#agendar' ?>" class="nav__link nav__link--cta">Agendar consultoria</a></li>
                     <li>
                         <?php if ($isLogged): ?>
+                            <a href="<?= $base ?>area-restrita"
+                                class="nav__link"
+                                title="Área restrita"
+                                aria-label="Voltar à área restrita">
+                                <i class="fa-solid fa-table-columns" aria-hidden="true"></i>
+                            </a>
                             <a href="<?= $base ?>logout"
                                 class="nav__link"
                                 title="Sair"

@@ -836,6 +836,15 @@ ul {
     border-radius: 6px;
 }
 
+.config-back {
+    margin: 0 0 1rem;
+}
+
+.config-back__link {
+    display: inline-block;
+    text-decoration: none;
+}
+
 .config-table {
     width: 100%;
     margin-top: 20px;
@@ -846,4 +855,171 @@ ul {
 .config-table td {
     border: 1px solid #444;
     padding: 10px;
+}
+
+.config-popup {
+    border: none;
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-width: 22rem;
+    color: #fff;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.config-popup::backdrop {
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.config-popup--success {
+    background: #1f6b3a;
+}
+
+.config-popup--error {
+    background: #7a1f1f;
+}
+
+.config-popup__text {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.is-header-hidden .header {
+    display: none;
+}
+
+.header-visibility-toggle {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 1100;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    background: #3a3a60;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.header-visibility-toggle:hover {
+    background: #4a4a78;
+}
+
+.config-inline-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.config-select {
+    min-width: 120px;
+}
+
+.config-message-cell {
+    max-width: 28rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.config-proposta-dialog {
+    max-width: 28rem;
+    background: #1b1b28;
+    text-align: left;
+}
+
+.funnel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    align-items: start;
+}
+
+.funnel-column {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 12px;
+    min-height: 180px;
+}
+
+.funnel-column__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.funnel-column__count {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.funnel-column__empty {
+    font-size: 0.85rem;
+    opacity: 0.6;
+    margin: 0;
+}
+
+.funnel-card {
+    background: #2a2a40;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.funnel-card__client {
+    margin: 0 0 8px;
+    font-size: 1rem;
+}
+
+.funnel-card p {
+    margin: 0 0 6px;
+    font-size: 0.9rem;
+}
+
+.funnel-card__actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.funnel-card__actions .config-inline-form {
+    margin: 0;
+}
+
+.funnel-card__actions .config-button {
+    width: auto;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.status-badge--aguardando_confirmacao {
+    background: #c9a227;
+}
+
+.status-badge--em_andamento {
+    background: #2b6cb0;
+}
+
+.status-badge--pausado {
+    background: #718096;
+}
+
+.status-badge--fechado {
+    background: #2f855a;
+}
+
+.status-badge--recusado {
+    background: #c53030;
 }

@@ -11,7 +11,7 @@ require BASE_PATH . '/app/views/partials/header.php';
     <div class="dashboard-cards">
 
         <div class="dashboard-card">
-            <h3>Emails Hoje</h3>
+            <h3>Mensagens hoje</h3>
             <p><?= htmlspecialchars($data['stats']['emails_hoje']) ?></p>
         </div>
 
@@ -22,17 +22,24 @@ require BASE_PATH . '/app/views/partials/header.php';
 
     </div>
 
-    <!-- ⚙️ Menu (itens administrativos só para admin; a restrição real está no ConfigController) -->
+    <!-- ⚙️ Menu (a restrição real está no ConfigController) -->
     <div class="dashboard-menu">
-        <?php if ($data['userType'] === 'admin'): ?>
-            <a href="<?= BASE_URL ?>config/email-template" class="dashboard-menu-item">
-                Template de E-mail
+        <?php if (in_array($data['userType'], ['admin', 'editor', 'viewer'], true)): ?>
+            <a href="<?= BASE_URL ?>config/mensagens" class="dashboard-menu-item">
+                Mensagens de contato
             </a>
+        <?php endif; ?>
 
+        <?php if (in_array($data['userType'], ['admin', 'editor'], true)): ?>
             <a href="<?= BASE_URL ?>config/contato" class="dashboard-menu-item">
                 Dados de contato
             </a>
+            <a href="<?= BASE_URL ?>config/propostas" class="dashboard-menu-item">
+                Propostas de clientes
+            </a>
+        <?php endif; ?>
 
+        <?php if ($data['userType'] === 'admin'): ?>
             <a href="<?= BASE_URL ?>config/usuarios" class="dashboard-menu-item">
                 Configuração de Usuários
             </a>

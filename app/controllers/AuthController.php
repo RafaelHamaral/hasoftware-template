@@ -102,7 +102,7 @@ class AuthController
             $_SESSION['user_name']  = $user['name'];
             $_SESSION['user_email'] = $user['email'];
             $type = (string) ($user['type'] ?? '');
-            $_SESSION['user_type'] = ($type === 'admin') ? 'admin' : 'viewer';
+            $_SESSION['user_type'] = in_array($type, ['admin', 'editor', 'viewer'], true) ? $type : 'viewer';
 
             header('Location: ' . BASE_URL . 'area-restrita');
             exit;
