@@ -484,4 +484,49 @@ class ConfigController
 
         return (float) $raw;
     }
+
+    public function sobre()
+    {
+        $this->requireContatoEditor();
+        $model = new ConfigModel();
+        $csrfToken = $this->csrfToken();
+        [$saveError, $saveSuccess] = $this->consumeFlash();
+        $data = [
+            'sobre' => $model->getSobreNos(),
+        ];
+
+        $isRestricted = true;
+        require BASE_PATH . '/app/views/config/sobre.php';
+    }
+
+    public function salvarSobreNos()
+    {
+        $this->requireContatoEditor();
+        $this->requirePostCsrf('config/sobre');
+
+        $payload = [
+            'titulo'    => trim((string) ($_POST['titulo'] ?? '')),
+            'subtitulo' => trim((string) ($_POST['subtitulo'] ?? '')),
+            'descricao' => trim((string) ($_POST['descricao'] ?? '')),
+        ];
+
+        if ($payload['titulo'] === '' || $payload['subtitulo'] === '' || $payload['descricao'] === '') {
+            $_SESSION['config_flash_error'] = 'Preencha título, subtítulo e descrição.';
+            header('Location: ' . BASE_URL . 'config/sobre');
+            exit;
+        }
+
+        $model = new ConfigModel();
+        $saved = $model->saveSobreNos($payload);
+
+        if (!$saved) {
+            $_SESSION['config_flash_error'] = 'Não foi possível salvar os dados de sobre nós.';
+            header('Location: ' . BASE_URL . 'config/sobre');
+            exit;
+        }
+
+        $_SESSION['config_flash_success'] = 'Dados de sobre nós salvos com sucesso.';
+        header('Location: ' . BASE_URL . 'config/sobre');
+        exit;
+    }
 }

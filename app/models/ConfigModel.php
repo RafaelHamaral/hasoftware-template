@@ -124,4 +124,31 @@ class ConfigModel
 
         return $this->db->prepare($sql)->execute($params);
     }
+
+    public function saveSobreNos(array $data): bool
+    {
+        $params = [
+            'titulo'    => $data['titulo'],
+            'subtitulo' => $data['subtitulo'],
+            'descricao' => $data['descricao'],
+        ];
+
+        $stmt = $this->db->prepare('SELECT id FROM sobre WHERE id = 1 LIMIT 1');
+        $stmt->execute();
+
+        if ($stmt->fetch()) {
+            $sql = 'UPDATE sobre SET titulo = :titulo, subtitulo = :subtitulo, descricao = :descricao WHERE id = 1';
+        } else {
+            $sql = 'INSERT INTO sobre (id, titulo, subtitulo, descricao) VALUES (1, :titulo, :subtitulo, :descricao)';
+        }
+        return $this->db->prepare($sql)->execute($params);
+    }
+
+    public function getSobreNos(): array
+    {
+        $stmt = $this->db->prepare('SELECT * FROM sobre WHERE id = 1 LIMIT 1');
+        $stmt->execute();
+        $sobreNos = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $sobreNos ? $sobreNos : [];
+    }
 }

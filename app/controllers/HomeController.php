@@ -21,7 +21,8 @@ class HomeController
         $model = new ConfigModel();
 
         $data = [
-            'contato' => $model->getContato()
+            'contato' => $model->getContato(),
+            'sobre' => $model->getSobreNos(),
         ];
 
         $whatsAppNumber = preg_replace(

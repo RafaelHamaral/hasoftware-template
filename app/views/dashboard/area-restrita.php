@@ -34,6 +34,9 @@ require BASE_PATH . '/app/views/partials/header.php';
             <a href="<?= BASE_URL ?>config/contato" class="dashboard-menu-item">
                 Dados de contato
             </a>
+            <a href="<?= BASE_URL ?>config/sobre" class="dashboard-menu-item">
+                Sobre nós
+            </a>
             <a href="<?= BASE_URL ?>config/propostas" class="dashboard-menu-item">
                 Propostas de clientes
             </a>

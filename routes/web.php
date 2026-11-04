@@ -25,6 +25,8 @@ $router->get('/config/mensagens', [ConfigController::class, 'mensagens']);
 $router->get('/config/email-template', [ConfigController::class, 'emailTemplate']);
 $router->get('/config/contato', [ConfigController::class, 'contato']);
 $router->post('/config/salvar-contato', [ConfigController::class, 'salvarContato']);
+$router->get('/config/sobre', [ConfigController::class, 'sobre']);
+$router->post('/config/salvar-sobre-nos', [ConfigController::class, 'salvarSobreNos']);
 $router->get('/config/usuarios', [ConfigController::class, 'usuarios']);
 $router->post('/config/salvar-usuario-tipo', [ConfigController::class, 'salvarUsuarioTipo']);
 $router->post('/config/criar-usuario', [ConfigController::class, 'criarUsuario']);
