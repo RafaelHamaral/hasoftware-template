@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 160" role="img" aria-labelledby="haIconTitle">
+  <title id="haIconTitle">H.A</title>
+  <defs>
+    <linearGradient id="haSilver" x1="12" y1="18" x2="12" y2="138" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#c5cae8"/>
+    </linearGradient>
+    <linearGradient id="haASilver" x1="210" y1="16" x2="210" y2="138" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d0d5ee"/>
+    </linearGradient>
+    <linearGradient id="haBlue" x1="148" y1="132" x2="268" y2="72" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3d4ed8"/>
+      <stop offset="0.5" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#93b4ff"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#haSilver)" d="M12 18h36v120H12zm68 0h36v120H80zM12 66h104v28H12z"/>
+  <rect x="128" y="110" width="20" height="20" rx="2" fill="#4c58e6"/>
+  <path fill="url(#haASilver)" fill-rule="evenodd" d="M162 136 214 16h26l48 120h-30l-16-42h-28l-18 42h-26zm54-86 10-28 14 28h-24z"/>
+  <path fill="#4d5ef2" d="m236 96 30 40h-32l-22-32z"/>
+  <path fill="url(#haBlue)" d="M148 124c34-8 62-30 104-46l9 17c-38 14-64 34-95 45z"/>
+</svg>

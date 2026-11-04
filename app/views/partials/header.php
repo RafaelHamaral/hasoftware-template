@@ -45,6 +45,10 @@ $bodyClassAttr = $bodyClasses !== [] ? ' class="' . htmlspecialchars(implode(' '
         referrerpolicy="no-referrer">
 
     <link rel="stylesheet" href="<?= $base ?>css/style.css">
+    <link rel="icon" href="<?= $base ?>assets/images/brand/logo-ha-icon.png" type="image/png">
+    <link rel="icon" href="<?= $base ?>assets/images/brand/favicon-32.png" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="<?= $base ?>assets/images/brand/apple-touch-icon.png">
+    <meta name="theme-color" content="#0d0d0f">
 </head>
 <body<?= $bodyClassAttr ?>>
     <?php if ($isRestricted): ?>
@@ -61,8 +65,19 @@ $bodyClassAttr = $bodyClasses !== [] ? ' class="' . htmlspecialchars(implode(' '
     <?php endif; ?>
     <header class="header" id="header">
         <div class="container header__container">
-            <a href="<?= $base ? $base . '#inicio' : 'index.php#inicio' ?>" class="header__logo" aria-label="Ir para início">
-                <span class="header__logo-text">H. A Consultoria & Desenvolvimento</span>
+            <a href="<?= $base ? $base . '#inicio' : 'index.php#inicio' ?>" class="header__logo" aria-label="H.A Consultoria e Desenvolvimento de Software — início">
+                <img
+                    class="header__logo-mark"
+                    src="<?= $base ?>assets/images/brand/logo-ha-icon.png"
+                    alt=""
+                    width="118"
+                    height="42"
+                    decoding="async"
+                >
+                <span class="header__logo-text">
+                    <span class="header__logo-name">Consultoria</span>
+                    <span class="header__logo-sub">&amp; Desenvolvimento de Software</span>
+                </span>
             </a>
 
             <button class="header__toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">

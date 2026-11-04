@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 180" role="img" aria-labelledby="haLogoTitle haLogoDesc">
+  <title id="haLogoTitle">H.A Consultoria e Desenvolvimento de Software</title>
+  <desc id="haLogoDesc">Símbolo H.A, nome da empresa e slogan Soluções em tecnologia para o seu negócio.</desc>
+  <defs>
+    <linearGradient id="haSilverFull" x1="40" y1="26" x2="40" y2="146" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#c5cae8"/>
+    </linearGradient>
+    <linearGradient id="haASilverFull" x1="200" y1="26" x2="200" y2="146" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d0d5ee"/>
+    </linearGradient>
+    <linearGradient id="haBlueFull" x1="150" y1="140" x2="268" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3d4ed8"/>
+      <stop offset="0.45" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#93b4ff"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(0,10)">
+    <path fill="url(#haSilverFull)" d="M12 18h36v120H12V18zm68 0h36v120H80V18zM12 66h104v28H12V66z"/>
+    <rect x="128" y="110" width="20" height="20" rx="2" fill="#4c58e6"/>
+    <path fill="url(#haASilverFull)" fill-rule="evenodd" d="M158 136 208 16h28l18 48h-24l-10-26-36 98h-26zm56-78 12-32 16 32h-28z"/>
+    <path fill="#4d5ef2" d="M238 94 268 138h-34l-20-30 24-14z"/>
+    <path fill="url(#haBlueFull)" d="M146 126c32-10 58-32 100-48l10 18c-38 14-62 34-92 46-6-4-12-10-18-16z"/>
+  </g>
+  <line x1="300" y1="36" x2="300" y2="144" stroke="#6d7cff" stroke-width="3"/>
+  <text x="328" y="78" fill="#ffffff" font-family="Outfit, Helvetica Neue, Arial, sans-serif" font-size="42" font-weight="600">H.A Consultoria</text>
+  <text x="328" y="118" fill="#e8e8ec" font-family="Outfit, Helvetica Neue, Arial, sans-serif" font-size="26" font-weight="400">e Desenvolvimento de Software</text>
+  <line x1="328" y1="136" x2="430" y2="136" stroke="#818cf8" stroke-width="2.5"/>
+  <text x="442" y="140" fill="#a5b4fc" font-family="DM Sans, Helvetica Neue, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="2.2">SOLUÇÕES EM TECNOLOGIA PARA O SEU NEGÓCIO</text>
+</svg>

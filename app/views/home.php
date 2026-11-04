@@ -69,11 +69,11 @@ require BASE_PATH . '/app/views/partials/config-flash.php';
         </section>
 
         <section class="contact section" id="contato">
-            <div class="container contact__container">
+             <div class="container contact__container">
                 <div class="contact__info">
                     <h2 class="section__title"><?= htmlspecialchars($data['contato']['titulo'] ?? '', ENT_QUOTES, 'UTF-8') ?></h2>
                     <p class="contact__lead"><?= htmlspecialchars($data['contato']['descricao'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
-                    <ul class="contact__list">
+                    <!-- <ul class="contact__list">
                         <li>
                             <span class="contact__label"><?= htmlspecialchars($data['contato']['email_label'] ?? 'E-mail', ENT_QUOTES, 'UTF-8') ?></span>
                             <a href="mailto:<?= htmlspecialchars($data['contato']['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($data['contato']['email'] ?? '', ENT_QUOTES, 'UTF-8') ?></a>
@@ -86,23 +86,23 @@ require BASE_PATH . '/app/views/partials/config-flash.php';
                             <span class="contact__label"><?= htmlspecialchars($data['contato']['telefone_label'] ?? 'Telefone', ENT_QUOTES, 'UTF-8') ?></span>
                             <a href="tel:<?= htmlspecialchars($data['contato']['telefone'] ?? '', ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($data['contato']['telefone'] ?? '', ENT_QUOTES, 'UTF-8') ?></a>
                         </li>
-                    </ul>
+                    </ul> -->
+                    <form class="contact__form" id="contactForm" action="<?= BASE_URL ?>contato/enviar" method="post">
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                        <label for="name" class="contact__form-label">Nome</label>
+                        <input type="text" id="name" name="name" class="contact__form-input" required placeholder="Seu nome">
+                        <label for="email" class="contact__form-label">E-mail</label>
+                        <input type="email" id="email" name="email" class="contact__form-input" required placeholder="seu@email.com">
+                        <label for="message" class="contact__form-label">Mensagem</label>
+                        <textarea id="message" name="message" class="contact__form-input contact__form-textarea" rows="4" required placeholder="Como podemos ajudar?"></textarea>
+                        <button type="submit" class="btn btn--primary contact__form-btn">Enviar mensagem</button>
+                    </form>
                     <div class="contact__social">
                         <a href="#" class="contact__social-link" aria-label="Instagram">Instagram</a>
                         <a href="#" class="contact__social-link" aria-label="LinkedIn">LinkedIn</a>
                         <a href="#" class="contact__social-link" aria-label="Facebook">Facebook</a>
                     </div>
                 </div>
-                <form class="contact__form" id="contactForm" action="<?= BASE_URL ?>contato/enviar" method="post">
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>">
-                    <label for="name" class="contact__form-label">Nome</label>
-                    <input type="text" id="name" name="name" class="contact__form-input" required placeholder="Seu nome">
-                    <label for="email" class="contact__form-label">E-mail</label>
-                    <input type="email" id="email" name="email" class="contact__form-input" required placeholder="seu@email.com">
-                    <label for="message" class="contact__form-label">Mensagem</label>
-                    <textarea id="message" name="message" class="contact__form-input contact__form-textarea" rows="4" required placeholder="Como podemos ajudar?"></textarea>
-                    <button type="submit" class="btn btn--primary contact__form-btn">Enviar mensagem</button>
-                </form>
             </div>
         </section>
 

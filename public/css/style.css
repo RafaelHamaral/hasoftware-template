@@ -100,16 +100,50 @@ ul {
     min-height: 70px;
 }
 
-.header__logo-text {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 1.25rem;
-    letter-spacing: -0.02em;
+.header__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-width: 0;
 }
 
-/* Logo como imagem (quando tiver): descomente e ajuste
-.header__logo img { height: 36px; width: auto; }
-*/
+.header__logo-mark {
+    height: 42px;
+    width: auto;
+    flex-shrink: 0;
+    display: block;
+}
+
+.header__logo-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    min-width: 0;
+}
+
+.header__logo-name {
+    font-size: 0.98rem;
+}
+
+.header__logo-sub {
+    font-size: 0.68rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+}
+
+@media (max-width: 767px) {
+    .header__logo-mark {
+        height: 36px;
+    }
+
+    .header__logo-sub {
+        display: none;
+    }
+}
 
 /* Botão hambúrguer (mobile) */
 .header__toggle {
@@ -403,7 +437,28 @@ ul {
 }
 
 /* ========== SEÇÃO SOBRE ========== */
+.about {
+    position: relative;
+    overflow: hidden;
+}
+
+.about::before {
+    content: "";
+    position: absolute;
+    right: -4%;
+    top: 8%;
+    width: min(420px, 72%);
+    height: 84%;
+    background: url("../assets/images/brand/logo-ha-icon.png") no-repeat center;
+    background-size: contain;
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+}
+
 .about__container {
+    position: relative;
+    z-index: 1;
     display: grid;
     gap: 2.5rem;
     align-items: center;
@@ -516,21 +571,25 @@ ul {
 
 /* ========== SEÇÃO CONTATO ========== */
 .contact__container {
-    display: grid;
-    gap: 2.5rem;
+    display: flex;
+    justify-content: center;
 }
 
-@media (min-width: 768px) {
-    .contact__container {
-        grid-template-columns: 1fr 1fr;
-        gap: 3rem;
-        align-items: start;
-    }
+.contact__info {
+    width: 100%;
+    max-width: 36rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.contact__info .section__title {
+    text-align: center;
 }
 
 .contact__lead {
     color: var(--color-text-muted);
     margin-bottom: 1.5rem;
+    text-align: center;
 }
 
 .contact__list {
@@ -563,6 +622,7 @@ ul {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .contact__social-link {
@@ -581,6 +641,8 @@ ul {
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     padding: 2rem;
+    text-align: left;
+    margin: 0 auto 1.5rem;
 }
 
 .contact__form-label {
