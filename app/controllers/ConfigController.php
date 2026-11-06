@@ -529,4 +529,102 @@ class ConfigController
         header('Location: ' . BASE_URL . 'config/sobre');
         exit;
     }
+
+    public function inicio()
+        {
+            $this->requireContatoEditor();
+            $model = new ConfigModel();
+            $csrfToken = $this->csrfToken();
+            [$saveError, $saveSuccess] = $this->consumeFlash();
+            $data = [
+                'inicio' => $model->getDadosInicio(),
+            ];
+            $isRestricted = true;
+            require BASE_PATH . '/app/views/config/inicio.php';
+        }
+
+    public function salvarInicio()
+    {
+        $this->requireContatoEditor();
+        $this->requirePostCsrf('config/inicio');
+
+        $model = new ConfigModel();
+        $atual = $model->getDadosInicio();
+        $imagemAtual = (string) ($atual['imagem'] ?? '');
+
+        $upload = $this->salvarImagemInicio($imagemAtual);
+        if ($upload === false) {
+            header('Location: ' . BASE_URL . 'config/inicio');
+            exit;
+        }
+
+        $payload = [
+            'titulo' => trim((string) ($_POST['titulo'] ?? '')),
+            'subtitulo' => trim((string) ($_POST['subtitulo'] ?? '')),
+            'botao_inicio' => trim((string) ($_POST['botao_inicio'] ?? '')),
+            'imagem' => $upload,
+        ];
+
+        $saved = $model->saveDadosInicio($payload);
+
+        if (!$saved) {
+            $_SESSION['config_flash_error'] = 'Não foi possível salvar os dados de início.';
+            header('Location: ' . BASE_URL . 'config/inicio');
+            exit;
+        }
+
+        $_SESSION['config_flash_success'] = 'Dados de início salvos com sucesso.';
+        header('Location: ' . BASE_URL . 'config/inicio');
+        exit;
+    }
+
+    /**
+     * @return string|false Nome do arquivo a persistir, ou false em erro de upload.
+     */
+    private function salvarImagemInicio(string $imagemAtual)
+    {
+        $file = $_FILES['imagem'] ?? null;
+        if (!is_array($file) || ($file['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+            return $imagemAtual;
+        }
+
+        if (($file['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK) {
+            $_SESSION['config_flash_error'] = 'Não foi possível enviar a imagem.';
+            return false;
+        }
+
+        $tmp = (string) ($file['tmp_name'] ?? '');
+        if ($tmp === '' || !is_uploaded_file($tmp)) {
+            $_SESSION['config_flash_error'] = 'Arquivo de imagem inválido.';
+            return false;
+        }
+
+        $info = @getimagesize($tmp);
+        $mime = is_array($info) ? (string) ($info['mime'] ?? '') : '';
+        $extensoes = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp',
+            'image/gif' => 'gif',
+        ];
+        if (!isset($extensoes[$mime])) {
+            $_SESSION['config_flash_error'] = 'Envie uma imagem JPG, PNG, WEBP ou GIF.';
+            return false;
+        }
+
+        $dir = BASE_PATH . '/public/uploads';
+        if (!is_dir($dir) && !mkdir($dir, 0755, true) && !is_dir($dir)) {
+            $_SESSION['config_flash_error'] = 'Não foi possível criar a pasta de uploads.';
+            return false;
+        }
+
+        $nome = 'inicio-' . date('YmdHis') . '-' . bin2hex(random_bytes(4)) . '.' . $extensoes[$mime];
+        $destino = $dir . '/' . $nome;
+        if (!move_uploaded_file($tmp, $destino)) {
+            $_SESSION['config_flash_error'] = 'Não foi possível salvar a imagem.';
+            return false;
+        }
+
+        return $nome;
+    }
 }

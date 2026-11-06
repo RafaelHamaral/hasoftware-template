@@ -14,9 +14,29 @@ $experienceLabel = company_experience_years(2024, 2026);
     <div class="hero__overlay"></div>
     <div class="hero__bg"></div>
     <div class="container hero__content">
-        <h1 class="hero__title">H. A Consultoria & Desenvolvimento</h1>
-        <p class="hero__tagline">Transformando ideias em resultados. Soluções que fazem a diferença para o seu negócio.</p>
-        <a href="#servicos" class="btn btn--primary hero__cta">Conheça nossos serviços</a>
+    <h1 class="hero__title">
+        <span class="hero__heading<?= !empty($data['inicio']['imagem']) ? ' hero__heading--with-logo' : '' ?>">
+            <?php if (!empty($data['inicio']['imagem'])): ?>
+                <img
+                    src="<?= BASE_URL ?>uploads/<?= htmlspecialchars($data['inicio']['imagem'], ENT_QUOTES, 'UTF-8') ?>"
+                    alt=""
+                    width="100"
+                    height="100"
+                    class="hero__logo"
+                    decoding="async"
+                >
+            <?php endif; ?>
+            <span class="hero__heading-text"><?= htmlspecialchars(
+                !empty($data['inicio']['titulo'])
+                    ? $data['inicio']['titulo']
+                    : 'H. A Consultoria & Desenvolvimento',
+                ENT_QUOTES,
+                'UTF-8'
+            ) ?></span>
+        </span>
+    </h1>      
+    <p class="hero__tagline"><?= htmlspecialchars(($data['inicio']['subtitulo'] ?? '') ?: 'Transformando ideias em resultados. Soluções que fazem a diferença para o seu negócio.', ENT_QUOTES, 'UTF-8') ?></p>
+        <a href="#servicos" class="btn btn--primary hero__cta"><?= htmlspecialchars(($data['inicio']['botao_inicio'] ?? '') ?: 'Conheça nossos serviços', ENT_QUOTES, 'UTF-8') ?></a>
     </div>
     <div class="hero__scroll" aria-hidden="true">
         <span class="hero__scroll-line"></span>

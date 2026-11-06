@@ -16,13 +16,14 @@ class HomeController
         $experienceYears = company_experience_years($companyStartYear);
         $experienceLabel = 'Mais de ' . $experienceYears . ' anos';
 
-        $title = 'Rafael Holanda do Amaral | Soluções Profissionais';
+        $title = 'H.A Consultoria & Desenvolvimento | Soluções Profissionais';
 
         $model = new ConfigModel();
 
         $data = [
             'contato' => $model->getContato(),
             'sobre' => $model->getSobreNos(),
+            'inicio' => $model->getDadosInicio(),
         ];
 
         $whatsAppNumber = preg_replace(

@@ -34,3 +34,5 @@ $router->get('/config/propostas', [ConfigController::class, 'propostas']);
 $router->post('/config/salvar-proposta', [ConfigController::class, 'salvarProposta']);
 $router->post('/config/atualizar-proposta', [ConfigController::class, 'atualizarProposta']);
 $router->post('/config/excluir-proposta', [ConfigController::class, 'excluirProposta']);
+$router->get('/config/inicio', [ConfigController::class, 'inicio']);
+$router->post('/config/salvar-dados-inicio', [ConfigController::class, 'salvarInicio']);

@@ -29,6 +29,11 @@ require BASE_PATH . '/app/views/partials/header.php';
                 Mensagens de contato
             </a>
         <?php endif; ?>
+        <?php if (in_array($data['userType'], ['admin', 'editor'], true)): ?>
+            <a href="<?= BASE_URL ?>config/inicio" class="dashboard-menu-item">
+                Dados de início
+            </a>
+        <?php endif; ?>
 
         <?php if (in_array($data['userType'], ['admin', 'editor'], true)): ?>
             <a href="<?= BASE_URL ?>config/contato" class="dashboard-menu-item">

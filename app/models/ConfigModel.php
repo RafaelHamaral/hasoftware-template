@@ -151,4 +151,31 @@ class ConfigModel
         $sobreNos = $stmt->fetch(PDO::FETCH_ASSOC);
         return $sobreNos ? $sobreNos : [];
     }
+
+    public function getDadosInicio(): array
+    {
+        $stmt = $this->db->prepare('SELECT * FROM dados_inicio WHERE id = 1 LIMIT 1');
+        $stmt->execute();
+        $dadosInicio = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $dadosInicio ? $dadosInicio : [];
+    }
+
+    public function saveDadosInicio(array $data): bool
+    {
+        $params = [
+            'titulo' => $data['titulo'],
+            'subtitulo' => $data['subtitulo'],
+            'botao_inicio' => $data['botao_inicio'],
+            'imagem' => $data['imagem'] ?? '',
+        ];
+        $stmt = $this->db->prepare('SELECT id FROM dados_inicio WHERE id = 1 LIMIT 1');
+        $stmt->execute();
+
+        if ($stmt->fetch()) {
+            $sql = 'UPDATE dados_inicio SET titulo = :titulo, subtitulo = :subtitulo, botao_inicio = :botao_inicio, imagem = :imagem WHERE id = 1';
+        } else {
+            $sql = 'INSERT INTO dados_inicio (id, titulo, subtitulo, botao_inicio, imagem) VALUES (1, :titulo, :subtitulo, :botao_inicio, :imagem)';
+        }
+        return $this->db->prepare($sql)->execute($params);
+    }
 }
