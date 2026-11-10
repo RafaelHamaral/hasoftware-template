@@ -12,11 +12,13 @@ app/core/               Router
 app/controllers/        Home, Auth, Dashboard, Config
 app/models/             Config, Mensagem, Proposta, Dashboard
 app/views/              HTML PHP + partials
-app/console/            Migrator, Migration, SchemaInspector
+app/console/            Migrator, Migration, SchemaInspector, Seeder, SeederRunner
 app/helpers/            experience.php
-bin/migrate.php         CLI
+bin/migrate.php         CLI de schema
+bin/seed.php            CLI de dados iniciais
 config/                 config.php, env.php, database.php, cli.php
 database/migrations/    arquivos YYYYMMDDHHMMSS_slug.php
+database/seeders/       arquivos NNN_slug.php
 routes/web.php
 docs/
 ```
@@ -49,8 +51,8 @@ Não há camada de serviços nem ORM.
 | SAPI | web | exige `cli` |
 | Sessão | sim | não |
 | Autoload | core, controllers, models | + `app/console` |
-| PDO | sob demanda nos models | `getPDO()` em migrate/status/baseline/rollback |
-| `help` | — | não conecta ao banco |
+| PDO | sob demanda nos models | `getPDO()` em migrate/seed quando o comando precisa |
+| `help` | — | não conecta ao banco (`migrate` e `seed`) |
 
 ## Autenticação e autorização
 
@@ -115,3 +117,4 @@ Ver `docs/migrations.md`.
 - Uploads em `public/uploads/`; garantir escrita pelo usuário do PHP só nessa pasta.
 - Primeiro admin: criar pela tela de usuários (precisa de um admin já existente) ou inserção controlada fora da baseline — não há seed público.
 - PHP observado: 8.2. Servidor embutido: `php -S localhost:8000 -t public public/router.php`.
+- Seeders: `docs/seeders.md`. Não rodam migrations. Admin só com variáveis de ambiente.

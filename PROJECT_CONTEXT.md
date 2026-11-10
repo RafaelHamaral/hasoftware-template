@@ -1,7 +1,7 @@
 # PROJECT_CONTEXT.md
 
 Documentação de contexto do estado **atual** do código (novembro/2026).
-Fonte: o repositório. O `README.md`, `docs/database.md` e `docs/archtecture.md` estão desatualizados ou incompletos; a referência vigente em `docs/` é `PROJECT_SCOPE.md`, `ARCHITECTURE.md` e `migrations.md`.
+Fonte: o repositório. O `README.md`, `docs/database.md` e `docs/archtecture.md` estão desatualizados ou incompletos; a referência vigente em `docs/` é `PROJECT_SCOPE.md`, `ARCHITECTURE.md`, `migrations.md` e `seeders.md`.
 
 ---
 
@@ -20,6 +20,7 @@ Fonte: o repositório. O `README.md`, `docs/database.md` e `docs/archtecture.md`
 - Configuração persistida: início (com upload), sobre, contato, usuários, propostas, listagem de mensagens.
 - Formulário público de contato grava em `mensagens_contato` e tenta `mail()` para o e-mail configurado.
 - CLI de migrations (`status`, `migrate`, `rollback --confirm`, `baseline --confirm`).
+- CLI de seeders (`status`, `run`; `run --demo` opcional e protegido).
 
 ---
 
@@ -36,7 +37,7 @@ Fonte: o repositório. O `README.md`, `docs/database.md` e `docs/archtecture.md`
 | Composer / vendor | Ausentes |
 | Bibliotecas PHP | Nenhuma (loader de `.env` em `config/env.php`) |
 | Servidor | Document root `public/` (Apache `.htaccess` ou `php -S -t public public/router.php`) |
-| CLI | `php bin/migrate.php` (`PHP_SAPI === 'cli'`) |
+| CLI | `php bin/migrate.php`, `php bin/seed.php` (`PHP_SAPI === 'cli'`) |
 | Licença | MIT (Rafael Holanda do Amaral, 2026) |
 
 ---
@@ -88,9 +89,11 @@ A regra efetiva está no controller; o menu do dashboard só esconde links.
 | `app/controllers/` | Home, Auth, Dashboard, Config |
 | `app/models/` | Config, Mensagem, Proposta, Dashboard |
 | `app/views/` | Templates e `partials/` |
-| `app/console/` | `Migrator`, `Migration`, `SchemaInspector` |
+| `app/console/` | `Migrator`, `Migration`, `SchemaInspector`, `Seeder`, `SeederRunner` |
 | `app/helpers/experience.php` | Anos de experiência |
-| `bin/migrate.php` | CLI |
+| `bin/migrate.php` | CLI de schema |
+| `bin/seed.php` | CLI de dados iniciais |
+| `database/seeders/` | Seeders versionados |
 | `config/cli.php` | Bootstrap CLI (sem sessão) |
 | `database/migrations/` | Arquivos versionados |
 | `routes/web.php` | Rotas |
@@ -141,9 +144,13 @@ Persistência real com POST + CSRF nas telas ativas.
 
 ### 5.5 Migrations CLI
 
-Ver `docs/migrations.md`. Baseline das seis tabelas em `database/migrations/20241101000000_baseline_schema.php`. Sem seeds.
+Ver `docs/migrations.md`. Baseline das seis tabelas em `database/migrations/20241101000000_baseline_schema.php`. Sem dados.
 
-### 5.6 README vs código
+### 5.6 Seeders CLI
+
+Ver `docs/seeders.md`. `php bin/seed.php run` após `migrate`. Conteúdo neutro em `dados_inicio` / `dados_contato` / `sobre` (id=1 se ausente). Admin via `SEED_ADMIN_*` (hash `PASSWORD_DEFAULT`). Demo só com `--demo` e `SEED_ALLOW_DEMO=1`.
+
+### 5.7 README vs código
 
 README ainda fala em “micro SaaS”, CMS e API. **Não implementados.** Não tratar como SaaS multi-tenant.
 
@@ -188,7 +195,7 @@ Labels `email_label` / `whatsapp_label` / `telefone_label` existem só como defa
 7. Cinco falhas de login em 300 s bloqueiam tentativas.
 8. Contato público: cinco envios em 300 s; mensagem ≤ 5000 caracteres.
 9. Proposta “excluída” some das listagens (`estagio <> 'excluido'`), sem DELETE físico.
-10. Baseline não cria usuário admin; isso é operação posterior na aplicação.
+10. Baseline não cria usuário admin. O seeder cria um `admin` só com `SEED_ADMIN_*` e se o e-mail ainda não existir.
 11. Anos de experiência: helper `max(0, anoAtual - 2024)`; a home fixa o ano final em 2026.
 
 Sem recuperação de senha, cadastro público, API ou multi-tenant.

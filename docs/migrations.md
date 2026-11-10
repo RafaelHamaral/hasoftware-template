@@ -35,7 +35,7 @@ Instalação vazia (database criado, sem as seis tabelas):
 1. Backup não se aplica a dados, mas confira o `DB_NAME`.
 2. `.env` apontando para esse database.
 3. **`php bin/migrate.php migrate`** — cria a tabela de controle (se preciso), executa `20241101000000_baseline_schema.php` (`CREATE TABLE` das seis tabelas, **sem dados**) e grava o registro (lote **1** se a tabela de controle estava vazia).
-4. Crie o primeiro usuário admin **pela aplicação** (ou procedimento operacional). A baseline **não** insere usuários.
+4. `php bin/seed.php run` com `SEED_ADMIN_*` no ambiente (ver `docs/seeders.md`). A baseline **não** insere usuários.
 
 Não use `baseline --confirm` num banco sem as seis tabelas: a validação aborta e não registra.
 

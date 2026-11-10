@@ -30,6 +30,7 @@ Não há cadastro público nem área do cliente final.
 3. **Dashboard** — atalhos e dois indicadores.
 4. **Configuração** — início, sobre, contato, usuários, propostas, mensagens.
 5. **Migrations CLI** — schema versionado, fora do HTTP.
+6. **Seeders CLI** — dados iniciais idempotentes, fora do HTTP.
 
 ## Funcionalidades implementadas
 
@@ -41,6 +42,7 @@ Não há cadastro público nem área do cliente final.
 - Criação de usuários e troca de tipo (admin).
 - Listagem de mensagens (autenticados).
 - CLI: `status`, `migrate`, `rollback --confirm`, `baseline --confirm`.
+- CLI de seeders: `php bin/seed.php run` (admin via ambiente; conteúdo neutro).
 
 ## Em desenvolvimento / incompleto no código
 
