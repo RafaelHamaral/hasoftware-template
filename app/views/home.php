@@ -7,7 +7,7 @@
 require BASE_PATH . '/app/views/partials/header.php';
 require BASE_PATH . '/app/views/partials/config-flash.php';
 
-$experienceLabel = company_experience_years(2024, 2026);
+$experienceLabel = company_experience_years(2024, date('Y'));
 ?>
 
 <section class="hero" id="inicio">

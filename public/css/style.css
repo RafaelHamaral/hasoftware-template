@@ -924,6 +924,12 @@ ul {
     color: #fff;
     border: none;
     border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.config-button:hover {
+    background: #4a4a78;
 }
 
 .config-back {
@@ -948,10 +954,14 @@ ul {
 }
 
 .config-popup {
+    position: fixed;
+    inset: 0;
+    width: min(22rem, calc(100% - 2rem));
+    height: fit-content;
+    margin: auto;
     border: none;
     border-radius: 8px;
     padding: 1.5rem;
-    max-width: 22rem;
     color: #fff;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
 }
@@ -972,6 +982,16 @@ ul {
     margin: 0 0 1rem;
     font-size: 1rem;
     line-height: 1.4;
+}
+
+.config-popup--confirm {
+    background: #2a2a3d;
+}
+
+.config-popup__actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
 }
 
 .is-header-hidden .header {
@@ -1013,10 +1033,148 @@ ul {
     word-break: break-word;
 }
 
+.config-proposta-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
 .config-proposta-dialog {
     max-width: 28rem;
     background: #1b1b28;
     text-align: left;
+}
+
+.config-proposta-pdf-dialog {
+    width: min(48rem, calc(100% - 2rem));
+    max-width: 48rem;
+    max-height: 92vh;
+    overflow: auto;
+    background: #1b1b28;
+    text-align: left;
+}
+
+.proposta-pdf-sheet {
+    background: #fff;
+    color: #1a1a1e;
+    padding: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+.proposta-pdf-sheet__header {
+    background: #0d0d0f;
+    padding: 1.15rem 1.5rem 1rem;
+}
+
+.proposta-pdf-sheet__logo {
+    display: block;
+    width: min(100%, 420px);
+    height: auto;
+}
+
+.proposta-pdf-sheet__accent {
+    height: 4px;
+    background: #6366f1;
+}
+
+.proposta-pdf-sheet__body {
+    padding: 1.25rem 1.5rem 1.4rem;
+}
+
+.proposta-pdf-sheet__docrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 1.15rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e6e4ee;
+}
+
+.proposta-pdf-sheet__doc {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #0d0d0f;
+}
+
+.proposta-pdf-sheet__date {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #6b6b76;
+}
+
+.proposta-pdf-sheet__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.95rem 1.2rem;
+}
+
+.proposta-pdf-sheet__field--wide {
+    grid-column: 1 / -1;
+}
+
+.proposta-pdf-sheet__field--split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.proposta-pdf-sheet__field label {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6366f1;
+}
+
+.proposta-pdf-sheet .config-input {
+    width: 100%;
+    background: transparent;
+    color: #1a1a1e;
+    border: none;
+    border-bottom: 1px solid #d5d3de;
+    border-radius: 0;
+    padding: 0.35rem 0 0.45rem;
+}
+
+.proposta-pdf-sheet textarea.config-input {
+    border: 1px solid #e6e4ee;
+    border-radius: 6px;
+    padding: 0.65rem 0.75rem;
+    min-height: 7.5rem;
+    resize: vertical;
+}
+
+.proposta-pdf-sheet__footer {
+    background: #0d0d0f;
+    color: #c5c5ce;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.75rem;
+}
+
+.proposta-pdf-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+@media (max-width: 700px) {
+    .proposta-pdf-sheet__grid,
+    .proposta-pdf-sheet__field--split {
+        grid-template-columns: 1fr;
+    }
+
+    .proposta-pdf-sheet__docrow {
+        flex-direction: column;
+    }
 }
 
 .funnel {
@@ -1072,6 +1230,7 @@ ul {
 .funnel-card__actions {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
     margin-top: 8px;

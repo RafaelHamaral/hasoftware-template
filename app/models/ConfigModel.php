@@ -69,6 +69,37 @@ class ConfigModel
         ]);
     }
 
+    public function getUserById(int $id): ?array
+    {
+        if ($id <= 0) {
+            return null;
+        }
+
+        $stmt = $this->db->prepare('SELECT id, name, email, type FROM users WHERE id = :id LIMIT 1');
+        $stmt->execute(['id' => $id]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return is_array($user) ? $user : null;
+    }
+
+    public function countAdmins(): int
+    {
+        $stmt = $this->db->query("SELECT COUNT(*) FROM users WHERE type = 'admin'");
+
+        return (int) $stmt->fetchColumn();
+    }
+
+    public function deleteUser(int $id): bool
+    {
+        if ($id <= 0) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare('DELETE FROM users WHERE id = :id LIMIT 1');
+
+        return $stmt->execute(['id' => $id]) && $stmt->rowCount() === 1;
+    }
+
     public function getContato(): array
     {
         $defaults = [

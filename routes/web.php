@@ -30,9 +30,12 @@ $router->post('/config/salvar-sobre-nos', [ConfigController::class, 'salvarSobre
 $router->get('/config/usuarios', [ConfigController::class, 'usuarios']);
 $router->post('/config/salvar-usuario-tipo', [ConfigController::class, 'salvarUsuarioTipo']);
 $router->post('/config/criar-usuario', [ConfigController::class, 'criarUsuario']);
+$router->post('/config/excluir-usuario', [ConfigController::class, 'excluirUsuario']);
 $router->get('/config/propostas', [ConfigController::class, 'propostas']);
 $router->post('/config/salvar-proposta', [ConfigController::class, 'salvarProposta']);
 $router->post('/config/atualizar-proposta', [ConfigController::class, 'atualizarProposta']);
 $router->post('/config/excluir-proposta', [ConfigController::class, 'excluirProposta']);
+$router->post('/config/gerar-proposta-pdf', [ConfigController::class, 'gerarPropostaPdf']);
+$router->post('/config/salvar-resumo-proposta-pdf', [ConfigController::class, 'salvarResumoPropostaPdf']);
 $router->get('/config/inicio', [ConfigController::class, 'inicio']);
 $router->post('/config/salvar-dados-inicio', [ConfigController::class, 'salvarInicio']);

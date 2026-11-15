@@ -4,7 +4,7 @@
 <div class="config-container">
     <h1>Template de E-mail</h1>
 
-    <form class="config-form" method="POST" action="<?= BASE_URL ?>config/salvar-email-template">
+    <form class="config-form" method="POST" action="<?= BASE_URL ?>config/salvar-email-template" data-confirm="Confirma salvar dados?">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>">
 
         <label>Assunto</label>

@@ -6,7 +6,7 @@
     <h1>Configuração de Usuários</h1>
 
     <h2>Novo usuário</h2>
-    <form class="config-form" method="POST" action="<?= BASE_URL ?>config/criar-usuario">
+    <form class="config-form" method="POST" action="<?= BASE_URL ?>config/criar-usuario" data-confirm="Confirma criar usuário?">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>">
 
         <label>Nome</label>
@@ -52,7 +52,7 @@
                         <?php if ($isSelf): ?>
                             <?= htmlspecialchars($currentType, ENT_QUOTES, 'UTF-8') ?>
                         <?php else: ?>
-                            <form class="config-inline-form" method="POST" action="<?= BASE_URL ?>config/salvar-usuario-tipo">
+                            <form class="config-inline-form" method="POST" action="<?= BASE_URL ?>config/salvar-usuario-tipo" data-confirm="Confirma salvar usuário?">
                                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>">
                                 <input type="hidden" name="user_id" value="<?= $userId ?>">
                                 <select class="config-input config-select" name="type">
@@ -67,6 +67,17 @@
                     <td>
                         <?php if ($isSelf): ?>
                             Seu usuário
+                        <?php else: ?>
+                            <form
+                                class="config-inline-form"
+                                method="POST"
+                                action="<?= BASE_URL ?>config/excluir-usuario"
+                                data-confirm="Confirma excluir usuário?"
+                            >
+                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                <input type="hidden" name="user_id" value="<?= $userId ?>">
+                                <button class="config-button" type="submit">Excluir</button>
+                            </form>
                         <?php endif; ?>
                     </td>
                 </tr>

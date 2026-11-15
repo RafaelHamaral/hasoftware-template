@@ -46,6 +46,22 @@ class PropostaModel
         return $this->db->prepare($sql)->execute($this->params($data));
     }
 
+    public function updateResumo(int $id, string $resumo): bool
+    {
+        if ($id <= 0 || $resumo === '') {
+            return false;
+        }
+
+        $stmt = $this->db->prepare(
+            "UPDATE propostas_clientes SET resumo = :resumo WHERE id = :id AND estagio <> 'excluido'"
+        );
+
+        return $stmt->execute([
+            'resumo' => $resumo,
+            'id' => $id,
+        ]);
+    }
+
     public function update(int $id, array $data): bool
     {
         $sql = 'UPDATE propostas_clientes SET

@@ -36,15 +36,18 @@ $formatDate = static function (?string $value): string {
         </div>
     </div>
 
-    <p>
+    <p class="config-proposta-toolbar">
         <button type="button" class="config-button" onclick="document.getElementById('proposta-nova').showModal()">
             Nova proposta
+        </button>
+        <button type="button" class="config-button" onclick="openPropostaPdfFrom(document.getElementById('proposta-nova-form'))">
+            Gerar proposta PDF
         </button>
     </p>
 
     <dialog class="config-popup config-proposta-dialog" id="proposta-nova">
         <h2>Nova proposta</h2>
-        <form class="config-form" method="POST" action="<?= BASE_URL ?>config/salvar-proposta">
+        <form id="proposta-nova-form" class="config-form" method="POST" action="<?= BASE_URL ?>config/salvar-proposta" data-confirm="Confirma salvar proposta?">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>">
 
             <label>Nome do cliente</label>
@@ -78,7 +81,81 @@ $formatDate = static function (?string $value): string {
             <textarea class="config-input" name="resumo" required></textarea>
 
             <button class="config-button" type="submit">Salvar proposta</button>
+            <button class="config-button" type="button" onclick="openPropostaPdfFrom(document.getElementById('proposta-nova-form'))">Gerar proposta PDF</button>
             <button class="config-button" type="button" onclick="document.getElementById('proposta-nova').close()">Cancelar</button>
+        </form>
+    </dialog>
+
+    <dialog class="config-popup config-proposta-pdf-dialog" id="proposta-pdf" data-estagios="<?= htmlspecialchars((string) json_encode($data['estagios'] ?? [], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS), ENT_QUOTES, 'UTF-8') ?>">
+        <h2>Template da proposta</h2>
+        <form class="config-form" method="POST" action="<?= BASE_URL ?>config/gerar-proposta-pdf">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>">
+
+            <article class="proposta-pdf-sheet">
+                <header class="proposta-pdf-sheet__header">
+                    <img
+                        class="proposta-pdf-sheet__logo"
+                        src="<?= BASE_URL ?>assets/images/brand/logo-ha.png"
+                        alt="H.A Consultoria e Desenvolvimento de Software"
+                        width="420"
+                        height="77"
+                    >
+                </header>
+                <div class="proposta-pdf-sheet__accent"></div>
+
+                <div class="proposta-pdf-sheet__body">
+                    <div class="proposta-pdf-sheet__docrow">
+                        <p class="proposta-pdf-sheet__doc">Proposta comercial</p>
+                        <p class="proposta-pdf-sheet__date">Data: <?= htmlspecialchars(date('d/m/Y'), ENT_QUOTES, 'UTF-8') ?></p>
+                    </div>
+
+                    <div class="proposta-pdf-sheet__grid">
+                        <div class="proposta-pdf-sheet__field">
+                            <label for="pdf-nome-cliente">Nome do cliente</label>
+                            <input class="config-input" type="text" id="pdf-nome-cliente" name="nome_cliente" required>
+                        </div>
+                        <div class="proposta-pdf-sheet__field">
+                            <label for="pdf-titulo-projeto">Título do projeto</label>
+                            <input class="config-input" type="text" id="pdf-titulo-projeto" name="titulo_projeto" required>
+                        </div>
+                        <div class="proposta-pdf-sheet__field">
+                            <label for="pdf-status">Status</label>
+                            <input class="config-input" type="text" id="pdf-status" name="status">
+                        </div>
+                        <div class="proposta-pdf-sheet__field">
+                            <label for="pdf-valor">Valor da proposta</label>
+                            <input class="config-input" type="text" id="pdf-valor" name="valor_proposta">
+                        </div>
+                        <div class="proposta-pdf-sheet__field">
+                            <label for="pdf-horas">Quantidade de horas</label>
+                            <input class="config-input" type="text" id="pdf-horas" name="quantidade_horas">
+                        </div>
+                        <div class="proposta-pdf-sheet__field proposta-pdf-sheet__field--split">
+                            <div>
+                                <label for="pdf-prazo-inicio">Prazo início</label>
+                                <input class="config-input" type="text" id="pdf-prazo-inicio" name="prazo_inicio" placeholder="dd/mm/aaaa">
+                            </div>
+                            <div>
+                                <label for="pdf-prazo-final">Prazo final</label>
+                                <input class="config-input" type="text" id="pdf-prazo-final" name="prazo_final" placeholder="dd/mm/aaaa">
+                            </div>
+                        </div>
+                        <div class="proposta-pdf-sheet__field proposta-pdf-sheet__field--wide">
+                            <label for="pdf-resumo">Resumo do projeto</label>
+                            <textarea class="config-input" id="pdf-resumo" name="resumo" rows="6" required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="proposta-pdf-sheet__footer">
+                    <span><?= htmlspecialchars($data['marca']['contatoLinha'] ?? 'H. A Consultoria & Desenvolvimento', ENT_QUOTES, 'UTF-8') ?></span>
+                </footer>
+            </article>
+
+            <div class="proposta-pdf-actions">
+                <button class="config-button" type="submit">Baixar PDF</button>
+                <button class="config-button" type="button" onclick="document.getElementById('proposta-pdf').close()">Fechar</button>
+            </div>
         </form>
     </dialog>
 
@@ -121,7 +198,10 @@ $formatDate = static function (?string $value): string {
                             <button type="button" class="config-button" onclick="document.getElementById('<?= $dialogId ?>').showModal()">
                                 Editar
                             </button>
-                            <form class="config-inline-form" method="POST" action="<?= BASE_URL ?>config/excluir-proposta" onsubmit="return confirm('Excluir este projeto do acompanhamento? Ele sai da tela, mas permanece no banco como excluído.');">
+                            <button type="button" class="config-button" onclick="openPropostaPdfFrom(document.querySelector('#<?= $dialogId ?> .config-form'))">
+                                Gerar PDF
+                            </button>
+                            <form class="config-inline-form" method="POST" action="<?= BASE_URL ?>config/excluir-proposta" data-confirm="Confirma excluir proposta?">
                                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>">
                                 <input type="hidden" name="id" value="<?= $id ?>">
                                 <button type="submit" class="config-button">Excluir</button>
@@ -131,7 +211,7 @@ $formatDate = static function (?string $value): string {
 
                     <dialog class="config-popup config-proposta-dialog" id="<?= $dialogId ?>">
                         <h2>Editar proposta</h2>
-                        <form class="config-form" method="POST" action="<?= BASE_URL ?>config/atualizar-proposta">
+                        <form class="config-form" method="POST" action="<?= BASE_URL ?>config/atualizar-proposta" data-confirm="Confirma salvar proposta?">
                             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>">
                             <input type="hidden" name="id" value="<?= $id ?>">
 
@@ -175,4 +255,40 @@ $formatDate = static function (?string $value): string {
     </div>
 </div>
 
+<script>
+function propostaPdfFormatDate(value) {
+    var raw = String(value || '');
+    var match = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (!match) {
+        return raw;
+    }
+    return match[3] + '/' + match[2] + '/' + match[1];
+}
+
+function openPropostaPdfFrom(form) {
+    var dialog = document.getElementById('proposta-pdf');
+    if (!form || !dialog) {
+        return;
+    }
+
+    var data = new FormData(form);
+    var stages = {};
+    try {
+        stages = JSON.parse(dialog.getAttribute('data-estagios') || '{}');
+    } catch (error) {
+        stages = {};
+    }
+
+    var estagio = String(data.get('estagio') || '');
+    document.getElementById('pdf-nome-cliente').value = String(data.get('nome_cliente') || '');
+    document.getElementById('pdf-titulo-projeto').value = String(data.get('titulo_projeto') || '');
+    document.getElementById('pdf-status').value = stages[estagio] || estagio;
+    document.getElementById('pdf-valor').value = String(data.get('valor_proposta') || '');
+    document.getElementById('pdf-horas').value = String(data.get('quantidade_horas') || '');
+    document.getElementById('pdf-prazo-inicio').value = propostaPdfFormatDate(data.get('prazo_inicio'));
+    document.getElementById('pdf-prazo-final').value = propostaPdfFormatDate(data.get('prazo_final'));
+    document.getElementById('pdf-resumo').value = String(data.get('resumo') || '');
+    dialog.showModal();
+}
+</script>
 <?php require BASE_PATH . '/app/views/partials/footer.php'; ?>

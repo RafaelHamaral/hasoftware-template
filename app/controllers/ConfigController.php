@@ -268,6 +268,51 @@ class ConfigController
         exit;
     }
 
+    public function excluirUsuario()
+    {
+        $this->requireAdmin();
+        $this->requirePostCsrf('config/usuarios');
+
+        $userId = (int) ($_POST['user_id'] ?? 0);
+        $currentId = (int) ($_SESSION['user_id'] ?? 0);
+        $model = new ConfigModel();
+
+        if ($userId <= 0) {
+            $_SESSION['config_flash_error'] = 'Usuário inválido.';
+            header('Location: ' . BASE_URL . 'config/usuarios');
+            exit;
+        }
+
+        if ($userId === $currentId) {
+            $_SESSION['config_flash_error'] = 'Você não pode excluir o próprio usuário.';
+            header('Location: ' . BASE_URL . 'config/usuarios');
+            exit;
+        }
+
+        $user = $model->getUserById($userId);
+        if ($user === null) {
+            $_SESSION['config_flash_error'] = 'Usuário não encontrado.';
+            header('Location: ' . BASE_URL . 'config/usuarios');
+            exit;
+        }
+
+        if (($user['type'] ?? '') === 'admin' && $model->countAdmins() <= 1) {
+            $_SESSION['config_flash_error'] = 'Não é possível excluir o último administrador.';
+            header('Location: ' . BASE_URL . 'config/usuarios');
+            exit;
+        }
+
+        if (!$model->deleteUser($userId)) {
+            $_SESSION['config_flash_error'] = 'Não foi possível excluir o usuário.';
+            header('Location: ' . BASE_URL . 'config/usuarios');
+            exit;
+        }
+
+        $_SESSION['config_flash_success'] = 'Usuário excluído com sucesso.';
+        header('Location: ' . BASE_URL . 'config/usuarios');
+        exit;
+    }
+
     public function propostas()
     {
         $this->requireContatoEditor();
@@ -305,6 +350,7 @@ class ConfigController
             }
         }
 
+        $config = new ConfigModel();
         $data = [
             'propostasPorEstagio' => $porEstagio,
             'estagios' => $estagios,
@@ -312,6 +358,7 @@ class ConfigController
             'faturado' => $faturado,
             'horasTrabalhadas' => $horasTrabalhadas,
             'userName' => $_SESSION['user_name'],
+            'marca' => $this->propostaMarca($config),
         ];
 
         $isRestricted = true;
@@ -399,6 +446,114 @@ class ConfigController
         $_SESSION['config_flash_success'] = 'Proposta excluída do acompanhamento.';
         header('Location: ' . BASE_URL . 'config/propostas');
         exit;
+    }
+
+    public function salvarResumoPropostaPdf()
+    {
+        $this->requireContatoEditor();
+        $this->requirePostCsrf('config/propostas');
+
+        $id = (int) ($_POST['id'] ?? 0);
+        $resumo = trim((string) ($_POST['resumo'] ?? ''));
+
+        if ($id <= 0) {
+            $_SESSION['config_flash_error'] = 'Salve a proposta no acompanhamento antes de gravar o resumo do PDF.';
+            header('Location: ' . BASE_URL . 'config/propostas');
+            exit;
+        }
+
+        if ($resumo === '') {
+            $_SESSION['config_flash_error'] = 'Preencha o resumo do projeto para salvar.';
+            header('Location: ' . BASE_URL . 'config/propostas?pdf=' . $id);
+            exit;
+        }
+
+        require_once BASE_PATH . '/app/models/PropostaModel.php';
+        $model = new PropostaModel();
+
+        if (!$model->updateResumo($id, $resumo)) {
+            $_SESSION['config_flash_error'] = 'Não foi possível salvar o resumo da proposta.';
+            header('Location: ' . BASE_URL . 'config/propostas?pdf=' . $id);
+            exit;
+        }
+
+        $_SESSION['config_flash_success'] = 'Resumo da proposta salvo. Você já pode baixar o PDF atualizado.';
+        header('Location: ' . BASE_URL . 'config/propostas?pdf=' . $id);
+        exit;
+    }
+
+    public function gerarPropostaPdf()
+    {
+        $this->requireContatoEditor();
+        $this->requirePostCsrf('config/propostas');
+
+        $nome = trim((string) ($_POST['nome_cliente'] ?? ''));
+        $titulo = trim((string) ($_POST['titulo_projeto'] ?? ''));
+        // $status = trim((string) ($_POST['status'] ?? ''));
+        $valor = trim((string) ($_POST['valor_proposta'] ?? ''));
+        $horas = trim((string) ($_POST['quantidade_horas'] ?? ''));
+        $inicio = trim((string) ($_POST['prazo_inicio'] ?? ''));
+        $final = trim((string) ($_POST['prazo_final'] ?? ''));
+        $resumo = trim((string) ($_POST['resumo'] ?? ''));
+
+        if ($nome === '' || $titulo === '' || $resumo === '') {
+            $_SESSION['config_flash_error'] = 'Preencha cliente, título e resumo para gerar o PDF.';
+            header('Location: ' . BASE_URL . 'config/propostas');
+            exit;
+        }
+
+        $valorLabel = $valor === '' ? '—' : (str_contains(mb_strtolower($valor), 'r$') ? $valor : 'R$ ' . $valor);
+        $marca = $this->propostaMarca(new ConfigModel());
+
+        $pdf = new SimplePdf();
+        $pdf->composeProposal([
+            'logo' => $marca['logoPath'],
+            'data' => date('d/m/Y'),
+            'cliente' => $nome,
+            'projeto' => $titulo,
+            // 'status' => $status === '' ? '—' : $status,
+            'valor' => $valorLabel,
+            'horas' => $horas === '' ? '—' : $horas,
+            'inicio' => $inicio === '' ? '—' : $inicio,
+            'final' => $final === '' ? '—' : $final,
+            'resumo' => $resumo,
+            'contato' => $marca['contatoLinha'],
+        ]);
+
+        $slug = strtolower(trim((string) preg_replace('/[^a-z0-9]+/i', '-', $nome), '-'));
+        $pdf->output('proposta-' . ($slug !== '' ? $slug : 'cliente') . '.pdf');
+        exit;
+    }
+
+    /**
+     * @return array{logoUrl:string,logoPath:string,contatoLinha:string,subtitulo:string}
+     */
+    private function propostaMarca(ConfigModel $model): array
+    {
+        $inicio = $model->getDadosInicio();
+        $contato = $model->getContato();
+        $logoPath = BASE_PATH . '/public/assets/images/brand/logo-ha.png';
+
+        $parts = [];
+        $email = trim((string) ($contato['email'] ?? ''));
+        $telefone = trim((string) ($contato['telefone'] ?? ''));
+        $whatsapp = trim((string) ($contato['whatsapp'] ?? ''));
+        if ($email !== '') {
+            $parts[] = $email;
+        }
+        if ($telefone !== '') {
+            $parts[] = 'Tel. ' . $telefone;
+        }
+        if ($whatsapp !== '') {
+            $parts[] = 'WhatsApp ' . $whatsapp;
+        }
+
+        return [
+            'logoUrl' => BASE_URL . 'assets/images/brand/logo-ha.png',
+            'logoPath' => is_file($logoPath) ? $logoPath : '',
+            'contatoLinha' => $parts !== [] ? implode('  |  ', $parts) : 'H. A Consultoria & Desenvolvimento',
+            'subtitulo' => trim((string) ($inicio['subtitulo'] ?? '')) ?: 'Soluções em tecnologia para o seu negócio',
+        ];
     }
 
     private function propostaPayload(PropostaModel $model): ?array
