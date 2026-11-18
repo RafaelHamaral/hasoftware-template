@@ -142,7 +142,7 @@ $experienceLabel = company_experience_years(2024, date('Y'));
 <section class="section section--minimal" id="agendar" aria-label="Agendar consultoria">
     <div class="container">
         <p class="section__subtitle">Pronto para dar o próximo passo com o seu projeto?</p>
-        <div style="margin-top: 1.5rem; text-align: center;">
+        <div class="cta-row">
             <a
                 href="<?= htmlspecialchars($whatsAppUrl, ENT_QUOTES, 'UTF-8') ?>"
                 class="btn btn--primary"

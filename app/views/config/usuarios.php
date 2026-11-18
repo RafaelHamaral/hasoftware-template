@@ -29,6 +29,7 @@
     </form>
 
     <h2>Usuários existentes</h2>
+    <div class="config-table-wrap">
     <table class="config-table">
         <thead>
             <tr>
@@ -84,6 +85,7 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 </div>
 
 <?php require BASE_PATH . '/app/views/partials/footer.php'; ?>

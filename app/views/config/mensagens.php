@@ -9,6 +9,7 @@
     <?php if (empty($data['mensagens'])): ?>
         <p>Nenhuma mensagem recebida ainda.</p>
     <?php else: ?>
+        <div class="config-table-wrap">
         <table class="config-table">
             <thead>
                 <tr>
@@ -33,6 +34,7 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        </div>
     <?php endif; ?>
 </div>
 
