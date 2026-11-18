@@ -46,6 +46,17 @@ class HomeController
         $saveSuccess = $_SESSION['contato_form_success'] ?? '';
         unset($_SESSION['contato_form_error'], $_SESSION['contato_form_success']);
 
+        require_once BASE_PATH . '/app/helpers/demo_sales.php';
+        $painelCtaMessage = demo_sales_cta_message();
+        $automacaoCtaMessage = 'Olá, quero automatizar uma tarefa repetitiva do meu negócio.';
+        $interesse = (string) ($_GET['interesse'] ?? '');
+        $contactMessage = '';
+        if ($interesse === 'painel') {
+            $contactMessage = $painelCtaMessage;
+        } elseif ($interesse === 'automacao') {
+            $contactMessage = $automacaoCtaMessage;
+        }
+
         require BASE_PATH . '/app/views/home.php';
     }
 
@@ -118,39 +129,13 @@ class HomeController
             exit;
         }
 
-        $this->enviarEmailNotificacao($payload);
+        require_once BASE_PATH . '/app/helpers/contact_mail.php';
+        $config = new ConfigModel();
+        contact_notification_send($payload, $config->getContato());
 
         unset($_SESSION['contato_form_attempts'], $_SESSION['contato_form_last']);
         $_SESSION['contato_form_success'] = 'Mensagem enviada com sucesso.';
         header('Location: ' . BASE_URL . '#contato');
         exit;
-    }
-
-    private function enviarEmailNotificacao(array $payload): void
-    {
-        $config = new ConfigModel();
-        $contato = $config->getContato();
-        $destino = trim((string) ($contato['email'] ?? ''));
-
-        if ($destino === '' || !filter_var($destino, FILTER_VALIDATE_EMAIL)) {
-            return;
-        }
-
-        $assunto = 'Nova mensagem do site — ' . $payload['nome'];
-        $corpo = "Nome: {$payload['nome']}\n"
-            . "E-mail: {$payload['email']}\n\n"
-            . "Mensagem:\n{$payload['mensagem']}\n";
-
-        $headers = [
-            'MIME-Version: 1.0',
-            'Content-Type: text/plain; charset=UTF-8',
-            'From: ' . $destino,
-            'Reply-To: ' . $payload['email'],
-        ];
-
-        $enviado = @mail($destino, $assunto, $corpo, implode("\r\n", $headers));
-        if (!$enviado) {
-            error_log('Falha ao enviar e-mail de notificação de contato para o destino configurado.');
-        }
     }
 }

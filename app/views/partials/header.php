@@ -91,6 +91,7 @@ $bodyClassAttr = $bodyClasses !== [] ? ' class="' . htmlspecialchars(implode(' '
                     <li><a href="<?= $base ? $base . '#inicio' : 'index.php#inicio' ?>" class="nav__link">Início</a></li>
                     <li><a href="<?= $base ? $base . '#sobre' : 'index.php#sobre' ?>" class="nav__link">Sobre</a></li>
                     <li><a href="<?= $base ? $base . '#servicos' : 'index.php#servicos' ?>" class="nav__link">Serviços</a></li>
+                    <li><a href="<?= $base ?>projetos" class="nav__link">Projetos</a></li>
                     <li><a href="<?= $base ? $base . '#contato' : 'index.php#contato' ?>" class="nav__link">Contato</a></li>
                     <li><a href="<?= $base ? $base . '#agendar' : 'index.php#agendar' ?>" class="nav__link nav__link--cta">Agendar consultoria</a></li>
                     <li>

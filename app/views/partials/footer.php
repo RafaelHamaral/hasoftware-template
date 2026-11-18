@@ -9,6 +9,7 @@ $base = defined('BASE_URL') ? BASE_URL : '';
                 <a href="<?= $base ? $base . '#inicio' : 'index.php#inicio' ?>">Início</a>
                 <a href="<?= $base ? $base . '#sobre' : 'index.php#sobre' ?>">Sobre</a>
                 <a href="<?= $base ? $base . '#servicos' : 'index.php#servicos' ?>">Serviços</a>
+                <a href="<?= $base ?>projetos">Projetos</a>
                 <a href="<?= $base ? $base . '#contato' : 'index.php#contato' ?>">Contato</a>
             </div>
             <div class="footer__social">

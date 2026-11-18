@@ -6,8 +6,6 @@
  */
 require BASE_PATH . '/app/views/partials/header.php';
 require BASE_PATH . '/app/views/partials/config-flash.php';
-
-$experienceLabel = company_experience_years(2024, date('Y'));
 ?>
 
 <section class="hero" id="inicio">
@@ -53,7 +51,7 @@ $experienceLabel = company_experience_years(2024, date('Y'));
             <p class="about__lead"><?= htmlspecialchars($data['sobre']['subtitulo'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
             <p class="about__body"><?= htmlspecialchars($data['sobre']['descricao'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
             <ul class="about__highlights">
-                <li><strong>+<?= htmlspecialchars($experienceLabel, ENT_QUOTES, 'UTF-8') ?> anos</strong> de experiência</li>
+                <li><strong><?= htmlspecialchars($experienceLabel ?? '', ENT_QUOTES, 'UTF-8') ?></strong> de experiência</li>
                 <!-- <li><strong>Clientes satisfeitos</strong> em todo o Brasil</li> -->
                 <li><strong>Atendimento humanizado</strong> e dedicado</li>
             </ul>
@@ -73,7 +71,7 @@ $experienceLabel = company_experience_years(2024, date('Y'));
                         <path d="M2 17l10 5 10-5" />
                     </svg>
                 </div>
-                <h3 class="service-card__title">Consultoria</h3>
+                <h3 class="service-card__title"><a href="#consultoria">Consultoria</a></h3>
                 <p class="service-card__desc">Análise estratégica e planejamento para o crescimento do seu negócio.</p>
             </article>
             <article class="service-card">
@@ -97,6 +95,42 @@ $experienceLabel = company_experience_years(2024, date('Y'));
                 <h3 class="service-card__title">Suporte</h3>
                 <p class="service-card__desc">Acompanhamento contínuo e suporte para garantir o sucesso.</p>
             </article>
+        </div>
+
+        <div class="task-calc" id="consultoria">
+            <h3 class="task-calc__title">Quanto tempo essa tarefa consome?</h3>
+            <p class="task-calc__lead">
+                Informe com que frequência ela é feita e quanto dura cada execução.
+                A estimativa usa 52 ÷ 12 semanas por mês.
+            </p>
+            <form class="task-calc__form" id="taskCalcForm" action="#consultoria" method="get">
+                <label class="task-calc__label" for="taskCalcTimes">Vezes por semana</label>
+                <input
+                    class="contact__form-input"
+                    type="number"
+                    id="taskCalcTimes"
+                    name="vezes"
+                    step="any"
+                    inputmode="decimal"
+                    placeholder="Ex.: 12"
+                >
+                <label class="task-calc__label" for="taskCalcMinutes">Minutos por execução</label>
+                <input
+                    class="contact__form-input"
+                    type="number"
+                    id="taskCalcMinutes"
+                    name="minutos"
+                    step="any"
+                    inputmode="decimal"
+                    placeholder="Ex.: 15"
+                >
+                <button type="submit" class="btn btn--primary" id="taskCalcSubmit">Calcular</button>
+            </form>
+            <p class="task-calc__error" id="taskCalcError" role="alert" hidden></p>
+            <p class="task-calc__result" id="taskCalcResult" role="status" hidden></p>
+            <div class="cta-row">
+                <a class="btn btn--primary" id="taskCalcCta" href="#contato">Quero automatizar essa tarefa</a>
+            </div>
         </div>
     </div>
 </section>
@@ -127,7 +161,16 @@ $experienceLabel = company_experience_years(2024, date('Y'));
                 <label for="email" class="contact__form-label">E-mail</label>
                 <input type="email" id="email" name="email" class="contact__form-input" required placeholder="seu@email.com">
                 <label for="message" class="contact__form-label">Mensagem</label>
-                <textarea id="message" name="message" class="contact__form-input contact__form-textarea" rows="4" required placeholder="Como podemos ajudar?"></textarea>
+                <textarea
+                    id="message"
+                    name="message"
+                    class="contact__form-input contact__form-textarea"
+                    rows="4"
+                    required
+                    placeholder="Como podemos ajudar?"
+                    data-draft-key="vibecoding_contato_message"
+                    data-painel-message="<?= htmlspecialchars($painelCtaMessage ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                ><?= htmlspecialchars($contactMessage ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
                 <button type="submit" class="btn btn--primary contact__form-btn">Enviar mensagem</button>
             </form>
             <div class="contact__social">

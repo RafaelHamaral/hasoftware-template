@@ -20,8 +20,8 @@
 
         <label>Tipo</label>
         <select class="config-input config-select" name="type" required>
-            <option value="viewer">viewer — só dashboard e mensagens</option>
-            <option value="editor">editor — dashboard, mensagens e dados de contato</option>
+            <option value="viewer">viewer — só dashboard e solicitações (leitura)</option>
+            <option value="editor">editor — dashboard, solicitações e dados de contato</option>
             <option value="admin">admin — tudo, inclusive usuários</option>
         </select>
 

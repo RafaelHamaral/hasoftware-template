@@ -89,13 +89,80 @@ class ConfigController
         $model = new MensagemModel();
         [$saveError, $saveSuccess] = $this->consumeFlash();
 
+        $status = trim((string) ($_GET['status'] ?? ''));
+        if ($status !== '' && !$model->isAllowedStatus($status)) {
+            $status = '';
+        }
+        $pendingReturns = isset($_GET['retornos']) && (string) $_GET['retornos'] === '1';
+
         $data = [
-            'mensagens' => $model->listAll(),
-            'userName' => $_SESSION['user_name']
+            'mensagens' => $model->listFiltered($status, $pendingReturns),
+            'statusLabels' => $model->statusLabels(),
+            'filtroStatus' => $status,
+            'filtroRetornos' => $pendingReturns,
+            'canEdit' => $this->canEditContato(),
+            'userName' => $_SESSION['user_name'],
         ];
 
         $isRestricted = true;
         require BASE_PATH . '/app/views/config/mensagens.php';
+    }
+
+    public function mensagemDetalhe()
+    {
+        $this->checkAuth();
+
+        require_once BASE_PATH . '/app/models/MensagemModel.php';
+        $model = new MensagemModel();
+        $id = (int) ($_GET['id'] ?? 0);
+        $item = $model->getById($id);
+
+        if ($item === null) {
+            $_SESSION['config_flash_error'] = 'Solicitação não encontrada.';
+            header('Location: ' . BASE_URL . 'config/mensagens');
+            exit;
+        }
+
+        $csrfToken = $this->csrfToken();
+        [$saveError, $saveSuccess] = $this->consumeFlash();
+
+        $data = [
+            'item' => $item,
+            'historico' => $model->listHistory($id),
+            'statusLabels' => $model->statusLabels(),
+            'canEdit' => $this->canEditContato(),
+            'userName' => $_SESSION['user_name'],
+        ];
+
+        $isRestricted = true;
+        require BASE_PATH . '/app/views/config/mensagem-detalhe.php';
+    }
+
+    public function salvarMensagemAtendimento()
+    {
+        $this->requireContatoEditor();
+
+        $id = (int) ($_POST['id'] ?? 0);
+        $redirect = $id > 0 ? 'config/mensagem?id=' . $id : 'config/mensagens';
+        $this->requirePostCsrf($redirect);
+
+        require_once BASE_PATH . '/app/models/MensagemModel.php';
+        $model = new MensagemModel();
+        $result = $model->updateAtendimento($id, [
+            'status' => (string) ($_POST['status'] ?? ''),
+            'anotacao_interna' => (string) ($_POST['anotacao_interna'] ?? ''),
+            'proximo_contato' => (string) ($_POST['proximo_contato'] ?? ''),
+        ], (int) ($_SESSION['user_id'] ?? 0) ?: null);
+
+        if (empty($result['ok'])) {
+            $_SESSION['config_flash_error'] = $result['error'] ?? 'Não foi possível salvar o atendimento.';
+            header('Location: ' . BASE_URL . $redirect);
+            exit;
+        }
+
+        $_SESSION['config_flash_success'] = 'Atendimento atualizado.';
+        header('Location: ' . BASE_URL . $redirect);
+        exit;
     }
 
     public function emailTemplate()
@@ -350,7 +417,22 @@ class ConfigController
             }
         }
 
+        $ids = [];
+        foreach ($porEstagio as $itens) {
+            foreach ($itens as $item) {
+                $ids[] = (int) ($item['id'] ?? 0);
+            }
+        }
+        $linksPorProposta = [];
+        foreach ($ids as $propostaId) {
+            if ($propostaId > 0) {
+                $linksPorProposta[$propostaId] = $model->listShareLinks($propostaId);
+            }
+        }
+
         $config = new ConfigModel();
+        $shareUrl = (string) ($_SESSION['proposta_share_url'] ?? '');
+        unset($_SESSION['proposta_share_url']);
         $data = [
             'propostasPorEstagio' => $porEstagio,
             'estagios' => $estagios,
@@ -359,6 +441,9 @@ class ConfigController
             'horasTrabalhadas' => $horasTrabalhadas,
             'userName' => $_SESSION['user_name'],
             'marca' => $this->propostaMarca($config),
+            'ajustesPorProposta' => $model->listAdjustmentsByProposals($ids),
+            'linksPorProposta' => $linksPorProposta,
+            'shareUrl' => $shareUrl,
         ];
 
         $isRestricted = true;
@@ -386,6 +471,50 @@ class ConfigController
         }
 
         $_SESSION['config_flash_success'] = 'Proposta registrada com sucesso.';
+        header('Location: ' . BASE_URL . 'config/propostas');
+        exit;
+    }
+
+    public function gerarLinkProposta()
+    {
+        $this->requireContatoEditor();
+        $this->requirePostCsrf('config/propostas');
+
+        require_once BASE_PATH . '/app/models/PropostaModel.php';
+        $model = new PropostaModel();
+        $id = (int) ($_POST['id'] ?? 0);
+        $days = (int) ($_POST['validade_dias'] ?? 7);
+        $created = $model->createShareLink($id, $days);
+
+        if ($created === null) {
+            $_SESSION['config_flash_error'] = 'Não foi possível gerar o link. Confira a proposta e a validade (1, 7 ou 30 dias).';
+            header('Location: ' . BASE_URL . 'config/propostas');
+            exit;
+        }
+
+        $_SESSION['proposta_share_url'] = BASE_URL . 'proposta?t=' . $created['token'];
+        $_SESSION['config_flash_success'] = 'Link privado gerado. Copie agora; o token não é gravado em texto e não será mostrado de novo.';
+        header('Location: ' . BASE_URL . 'config/propostas');
+        exit;
+    }
+
+    public function revogarLinkProposta()
+    {
+        $this->requireContatoEditor();
+        $this->requirePostCsrf('config/propostas');
+
+        require_once BASE_PATH . '/app/models/PropostaModel.php';
+        $model = new PropostaModel();
+        $propostaId = (int) ($_POST['id'] ?? 0);
+        $linkId = (int) ($_POST['link_id'] ?? 0);
+
+        if (!$model->revokeShareLink($linkId, $propostaId)) {
+            $_SESSION['config_flash_error'] = 'Não foi possível revogar o link.';
+            header('Location: ' . BASE_URL . 'config/propostas');
+            exit;
+        }
+
+        $_SESSION['config_flash_success'] = 'Link revogado. O cliente não consegue mais abrir essa URL.';
         header('Location: ' . BASE_URL . 'config/propostas');
         exit;
     }

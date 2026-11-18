@@ -26,7 +26,7 @@ require BASE_PATH . '/app/views/partials/header.php';
     <div class="dashboard-menu">
         <?php if (in_array($data['userType'], ['admin', 'editor', 'viewer'], true)): ?>
             <a href="<?= BASE_URL ?>config/mensagens" class="dashboard-menu-item">
-                Mensagens de contato
+                Solicitações
             </a>
         <?php endif; ?>
         <?php if (in_array($data['userType'], ['admin', 'editor'], true)): ?>

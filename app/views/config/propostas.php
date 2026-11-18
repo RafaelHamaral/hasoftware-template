@@ -15,6 +15,13 @@ $formatDate = static function (?string $value): string {
     <?php require BASE_PATH . '/app/views/partials/config-voltar.php'; ?>
     <h1>Propostas de clientes</h1>
 
+    <?php if (!empty($data['shareUrl'])): ?>
+        <div class="config-share-url">
+            <p>Copie o link agora. Só o hash fica salvo; esta URL não será exibida novamente.</p>
+            <input class="config-input" type="text" readonly value="<?= htmlspecialchars((string) $data['shareUrl'], ENT_QUOTES, 'UTF-8') ?>">
+        </div>
+    <?php endif; ?>
+
     <div class="dashboard-cards">
         <?php foreach ($data['estagios'] as $status => $label): ?>
             <div class="dashboard-card">
@@ -206,7 +213,62 @@ $formatDate = static function (?string $value): string {
                                 <input type="hidden" name="id" value="<?= $id ?>">
                                 <button type="submit" class="config-button">Excluir</button>
                             </form>
+                            <form class="config-inline-form" method="POST" action="<?= BASE_URL ?>config/gerar-link-proposta" data-confirm="Confirma gerar link privado?">
+                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                <input type="hidden" name="id" value="<?= $id ?>">
+                                <label class="config-filter__label" for="validade-<?= $id ?>">Validade</label>
+                                <select class="config-input config-select" id="validade-<?= $id ?>" name="validade_dias">
+                                    <option value="1">1 dia</option>
+                                    <option value="7" selected>7 dias</option>
+                                    <option value="30">30 dias</option>
+                                </select>
+                                <button type="submit" class="config-button">Gerar link do cliente</button>
+                            </form>
                         </div>
+                        <?php
+                        $links = $data['linksPorProposta'][$id] ?? [];
+                        $ajustes = $data['ajustesPorProposta'][$id] ?? [];
+                        ?>
+                        <?php if ($links !== []): ?>
+                            <p class="funnel-card__meta">Links do cliente</p>
+                            <ul class="funnel-card__list">
+                                <?php foreach ($links as $link): ?>
+                                    <?php
+                                    $linkId = (int) ($link['id'] ?? 0);
+                                    $revoked = !empty($link['revoked_at']);
+                                    $expires = (string) ($link['expires_at'] ?? '');
+                                    $expired = false;
+                                    if ($expires !== '') {
+                                        $expDate = DateTime::createFromFormat('Y-m-d H:i:s', $expires);
+                                        $expired = $expDate instanceof DateTime && $expDate < new DateTime();
+                                    }
+                                    $state = $revoked ? 'Revogado' : ($expired ? 'Expirado' : 'Ativo até ' . $expires);
+                                    ?>
+                                    <li>
+                                        <?= htmlspecialchars($state, ENT_QUOTES, 'UTF-8') ?>
+                                        <?php if (!$revoked && !$expired): ?>
+                                            <form class="config-inline-form" method="POST" action="<?= BASE_URL ?>config/revogar-link-proposta" data-confirm="Confirma revogar este link?">
+                                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                                <input type="hidden" name="id" value="<?= $id ?>">
+                                                <input type="hidden" name="link_id" value="<?= $linkId ?>">
+                                                <button type="submit" class="config-button">Revogar</button>
+                                            </form>
+                                        <?php endif; ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                        <?php if ($ajustes !== []): ?>
+                            <p class="funnel-card__meta">Pedidos de ajuste</p>
+                            <ul class="funnel-card__list">
+                                <?php foreach ($ajustes as $ajuste): ?>
+                                    <li>
+                                        <time><?= htmlspecialchars((string) ($ajuste['criado_em'] ?? ''), ENT_QUOTES, 'UTF-8') ?></time>
+                                        — <?= htmlspecialchars((string) ($ajuste['mensagem'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
                     </article>
 
                     <dialog class="config-popup config-proposta-dialog" id="<?= $dialogId ?>">

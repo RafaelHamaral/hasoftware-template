@@ -273,7 +273,7 @@ ul {
     }
 
     .nav.is-open {
-        max-height: min(70vh, 28rem);
+        max-height: min(75vh, 32rem);
         overflow-y: auto;
     }
 
@@ -655,6 +655,174 @@ ul {
     line-height: 1.6;
 }
 
+.service-card__title a {
+    color: inherit;
+}
+
+.service-card__title a:hover,
+.service-card__title a:focus {
+    color: var(--color-accent-hover);
+}
+
+.task-calc {
+    margin-top: 2.5rem;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    scroll-margin-top: 5.5rem;
+}
+
+@media (min-width: 640px) {
+    .task-calc {
+        padding: 2rem;
+    }
+}
+
+.task-calc__title {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+}
+
+.task-calc__lead {
+    color: var(--color-text-muted);
+    margin: 0 0 1.25rem;
+    max-width: 40rem;
+}
+
+.task-calc__form {
+    max-width: 28rem;
+    text-align: left;
+}
+
+.task-calc__label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.task-calc__error {
+    color: #f0b4b4;
+    margin: 1rem 0 0;
+}
+
+.task-calc__result {
+    margin: 1rem 0 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.task-calc .cta-row {
+    margin-top: 1.25rem;
+}
+
+.config-share-url {
+    margin: 1rem 0 1.5rem;
+    padding: 1rem;
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+}
+
+.config-share-url p {
+    margin: 0 0 0.5rem;
+}
+
+.funnel-card__meta {
+    margin: 0.75rem 0 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+}
+
+.funnel-card__list {
+    margin: 0 0 0.5rem;
+    padding-left: 1.1rem;
+    font-size: 0.85rem;
+}
+
+.funnel-card__list li {
+    margin-bottom: 0.4rem;
+}
+
+.client-proposal {
+    padding-top: 6.5rem;
+}
+
+.client-proposal__kicker,
+.client-proposal__client,
+.client-proposal__foot {
+    color: var(--color-text-muted);
+}
+
+.client-proposal__facts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+@media (min-width: 640px) {
+    .client-proposal__facts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.client-proposal__facts dt {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+}
+
+.client-proposal__facts dd {
+    margin: 0.2rem 0 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.client-proposal__subtitle {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+}
+
+.client-proposal__scope {
+    white-space: pre-wrap;
+    margin: 0 0 1.75rem;
+}
+
+.client-proposal__form {
+    max-width: 36rem;
+}
+
+.client-proposal__form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.client-proposal__flash {
+    margin: 0 0 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+}
+
+.client-proposal__flash--ok {
+    background: #1f6b3a;
+}
+
+.client-proposal__flash--error {
+    background: #7a1f1f;
+}
+
+.client-proposal__status {
+    font-size: 1.1rem;
+}
+
 /* ========== SEÇÃO CONTATO ========== */
 .contact__container {
     display: flex;
@@ -734,7 +902,7 @@ ul {
 @media (min-width: 640px) {
     .contact__form {
         padding: 2rem;
-    }
+    }   
 }
 
 .contact__form-label {
@@ -991,6 +1159,13 @@ ul {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.config-hint {
+    margin: 0 0 0.35rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #c8c8d8;
 }
 
 .config-input {
@@ -1400,4 +1575,221 @@ ul {
 
 .status-badge--recusado {
     background: #c53030;
+}
+
+.status-badge--novo {
+    background: #2b6cb0;
+}
+
+.status-badge--em_conversa {
+    background: #c9a227;
+}
+
+.status-badge--proposta_enviada {
+    background: #6b46c1;
+}
+
+.status-badge--encerrado_sem_contratacao {
+    background: #718096;
+}
+
+.config-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.75rem;
+    margin: 1.25rem 0 0.5rem;
+}
+
+.config-filter__label {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.config-filter .config-select {
+    min-height: 44px;
+}
+
+.config-filter__check {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+}
+
+.config-detail {
+    margin: 1.25rem 0 1.75rem;
+}
+
+.config-detail h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.15rem;
+}
+
+/* ========== PAINEL DE VENDAS (DEMONSTRAÇÃO PÚBLICA) ========== */
+.demo-panel {
+    padding-top: 6.5rem;
+}
+
+.demo-panel__badge {
+    display: inline-block;
+    margin: 0 0 1rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: var(--color-accent-soft);
+    color: var(--color-accent-hover);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.demo-panel__lead {
+    max-width: 40rem;
+    margin-left: 0;
+    text-align: left;
+}
+
+.demo-panel__filter {
+    margin: 1.75rem 0 1rem;
+}
+
+.demo-panel__filter-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.demo-panel__filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: stretch;
+}
+
+.demo-panel__select {
+    min-width: 0;
+    flex: 1 1 12rem;
+    min-height: 44px;
+    padding: 0.6rem 0.85rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.demo-panel__filter-btn {
+    flex: 0 0 auto;
+}
+
+.demo-panel__period {
+    color: var(--color-text-muted);
+    margin: 0 0 1.25rem;
+}
+
+.demo-panel__kpis {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .demo-panel__kpis {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.demo-panel__kpi {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.15rem 1.2rem;
+    min-width: 0;
+}
+
+.demo-panel__kpi-label {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0 0 0.4rem;
+}
+
+.demo-panel__kpi-value {
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 0 0 0.5rem;
+    overflow-wrap: anywhere;
+}
+
+.demo-panel__kpi-hint,
+.demo-panel__formula,
+.demo-panel__empty {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+.demo-panel__formula {
+    margin-bottom: 1.25rem;
+}
+
+.demo-panel__empty {
+    background: var(--color-surface);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.demo-panel__table-wrap {
+    overflow-x: auto;
+    margin-bottom: 1.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.demo-panel__table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 32rem;
+}
+
+.demo-panel__table caption {
+    caption-side: top;
+    text-align: left;
+    padding: 0.85rem 1rem;
+    font-weight: 600;
+}
+
+.demo-panel__table th,
+.demo-panel__table td {
+    padding: 0.7rem 1rem;
+    text-align: left;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.92rem;
+}
+
+.demo-panel__table th {
+    color: var(--color-text-muted);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.demo-panel__cta {
+    margin-top: 0.5rem;
+}
+
+@media (min-width: 1024px) {
+    .nav__link {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.88rem;
+    }
+}
 }

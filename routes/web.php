@@ -5,6 +5,7 @@ $router->get('', [HomeController::class, 'index']);
 $router->get('/', [HomeController::class, 'index']);
 $router->get('/index.php', [HomeController::class, 'index']);
 $router->post('/contato/enviar', [HomeController::class, 'enviarContato']);
+$router->get('/projetos', [ProjetosController::class, 'index']);
 
 // 🔐 AUTENTICAÇÃO
 $router->get('/login', [AuthController::class, 'login']);
@@ -22,6 +23,8 @@ $router->get('/area-restrita.php', [DashboardController::class, 'index']);
 
 // ⚙️ CONFIG
 $router->get('/config/mensagens', [ConfigController::class, 'mensagens']);
+$router->get('/config/mensagem', [ConfigController::class, 'mensagemDetalhe']);
+$router->post('/config/salvar-mensagem-atendimento', [ConfigController::class, 'salvarMensagemAtendimento']);
 $router->get('/config/email-template', [ConfigController::class, 'emailTemplate']);
 $router->get('/config/contato', [ConfigController::class, 'contato']);
 $router->post('/config/salvar-contato', [ConfigController::class, 'salvarContato']);
@@ -37,5 +40,9 @@ $router->post('/config/atualizar-proposta', [ConfigController::class, 'atualizar
 $router->post('/config/excluir-proposta', [ConfigController::class, 'excluirProposta']);
 $router->post('/config/gerar-proposta-pdf', [ConfigController::class, 'gerarPropostaPdf']);
 $router->post('/config/salvar-resumo-proposta-pdf', [ConfigController::class, 'salvarResumoPropostaPdf']);
+$router->post('/config/gerar-link-proposta', [ConfigController::class, 'gerarLinkProposta']);
+$router->post('/config/revogar-link-proposta', [ConfigController::class, 'revogarLinkProposta']);
+$router->get('/proposta', [PropostaPublicaController::class, 'mostrar']);
+$router->post('/proposta/solicitar-ajuste', [PropostaPublicaController::class, 'solicitarAjuste']);
 $router->get('/config/inicio', [ConfigController::class, 'inicio']);
 $router->post('/config/salvar-dados-inicio', [ConfigController::class, 'salvarInicio']);
