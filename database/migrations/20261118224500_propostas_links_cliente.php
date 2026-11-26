@@ -44,5 +44,5 @@ return new class extends Migration {
     public function supportsDown(): bool
     {
         return true;
-    }
+    } 
 };
