@@ -45,4 +45,4 @@ $router->post('/config/revogar-link-proposta', [ConfigController::class, 'revoga
 $router->get('/proposta', [PropostaPublicaController::class, 'mostrar']);
 $router->post('/proposta/solicitar-ajuste', [PropostaPublicaController::class, 'solicitarAjuste']);
 $router->get('/config/inicio', [ConfigController::class, 'inicio']);
-$router->post('/config/salvar-dados-inicio', [ConfigController::class, 'salvarInicio']);
+$router->post('/config/salvar-dados-inicio', [ConfigController::class, 'salvarInicio']); 
