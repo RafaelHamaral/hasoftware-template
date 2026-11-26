@@ -58,7 +58,7 @@ function contact_notification_send(array $payload, array $contato, ?callable $ma
         'Content-Type: text/plain; charset=UTF-8',
         'From: ' . $fromHeader,
         'Reply-To: ' . $replyTo,
-        'X-Mailer: vibecoding-contato',
+        'X-Mailer: hasoftware-template-contato',
     ]);
 
     $transport = strtolower(trim((string) (getenv('MAIL_TRANSPORT') ?: ($_ENV['MAIL_TRANSPORT'] ?? 'mail'))));

@@ -5,7 +5,7 @@
  */
 
 $base = 'http://[::1]:5000';
-$cookieFile = sys_get_temp_dir() . '/vibecoding-contato-http.cookie';
+$cookieFile = sys_get_temp_dir() . '/hasoftware-template-contato-http.cookie';
 @unlink($cookieFile);
 
 function http_request(string $url, string $cookieFile, string $method = 'GET', array $fields = []): array

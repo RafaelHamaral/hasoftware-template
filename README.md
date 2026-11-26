@@ -1,4 +1,4 @@
-# Vibecoding-um - criando micro saas
+# hasoftware-template - criando micro saas
 
 Plataforma web com landing page institucional e área restrita.
 

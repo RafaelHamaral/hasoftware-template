@@ -7,7 +7,7 @@ Fonte: o repositório. O `README.md`, `docs/database.md` e `docs/archtecture.md`
 
 ## 1. Visão geral
 
-- **Nome:** vibecoding-um
+- **Nome:** hasoftware-template
 - **Objetivo:** site institucional da H. A Consultoria & Desenvolvimento (Rafael Holanda do Amaral), com login, área restrita e configuração persistida. Cada implantação usa o próprio código e o próprio banco. **Não** é SaaS multi-tenant.
 - **Público-alvo:** visitantes da landing; usuários internos na tabela `users` (`admin`, `editor`, `viewer`).
 - **Estágio:** MVP em PHP puro (MVC próprio). Sem Composer. Sem suíte PHPUnit. Schema versionado por migrations CLI.

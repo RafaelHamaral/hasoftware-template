@@ -19,7 +19,7 @@ final class AnaliseEstadoPdf extends SimplePdf
     {
         $this->publicLetterhead();
         $this->setY(841.89 - 118);
-        $this->title('Estado atual do site vibecoding');
+        $this->title('Estado atual do site hasoftware-template');
         $this->muted('Analise do repositorio em 18/11/2026. Somente leitura do codigo.');
         $this->muted('main e origin/main: commit 0e512c9 (responsividade). Ha alteracoes locais ainda nao enviadas ao remoto.');
         $this->gap(8);
@@ -152,6 +152,6 @@ final class AnaliseEstadoPdf extends SimplePdf
 
 $pdf = new AnaliseEstadoPdf();
 $pdf->writeDocument();
-$out = $base . '/docs/Analise-estado-atual-vibecoding.pdf';
+$out = $base . '/docs/Analise-estado-atual-hasoftware-template.pdf';
 file_put_contents($out, $pdf->bytes());
 echo $out . "\n" . filesize($out) . " bytes\n";

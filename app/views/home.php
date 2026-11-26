@@ -168,7 +168,7 @@ require BASE_PATH . '/app/views/partials/config-flash.php';
                     rows="4"
                     required
                     placeholder="Como podemos ajudar?"
-                    data-draft-key="vibecoding_contato_message"
+                    data-draft-key="hasoftware_contato_message"
                     data-painel-message="<?= htmlspecialchars($painelCtaMessage ?? '', ENT_QUOTES, 'UTF-8') ?>"
                 ><?= htmlspecialchars($contactMessage ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
                 <button type="submit" class="btn btn--primary contact__form-btn">Enviar mensagem</button>
